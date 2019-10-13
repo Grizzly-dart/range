@@ -30,6 +30,20 @@ print(IntRange.until(50, 10));
 print(IntRange.linspace(1, 10, 5));
 ```
 
+**Note:** For other types of ranges, please refer sections below.
+
+## Extent
+
+```dart
+print(Extent.compute<int>(List<int>.generate(10, (i) => i * 10)..shuffle()));
+```
+
+### Ranging an Extent
+
+```dart
+print(Extent(5, 50).range(5));
+```
+
 > TODO DoubleRange
 
 > TODO TimeRange

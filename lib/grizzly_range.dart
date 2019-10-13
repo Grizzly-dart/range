@@ -3,4 +3,5 @@
 /// More dartdocs go here.
 library range;
 
-export 'src/range.dart';
+export 'src/range/range.dart';
+export 'src/extent/extent.dart';

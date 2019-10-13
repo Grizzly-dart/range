@@ -1,3 +1,7 @@
+## 2.0.4
+
++ Moved `Extent` to grizzly_range package from grizzly_primitives package
+
 ## 2.0.2
 
 + README
