@@ -96,6 +96,20 @@ class Extent<E> {
     return Extent<E>(min, max, comparator: comparator);
   }
 
+  static List<Extent<E>> consecutive<E>(Iterable<E> data,
+      {Comparator comparator}) {
+    if (data.length <= 1) return [];
+
+    E start = data.first;
+    final ret = <Extent<E>>[];
+    for (final next in data.skip(1)) {
+      ret.add(Extent<E>(start, next, comparator: comparator));
+      start = next;
+    }
+
+    return ret;
+  }
+
   static int search<E>(List<Extent<E>> extents, E value) {
     if (extents.isEmpty) return -1;
     Comparator comp = (e, value) {

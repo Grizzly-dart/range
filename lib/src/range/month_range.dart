@@ -13,12 +13,13 @@ class MonthRange extends IterableBase<DateTime> {
   MonthRange._(this.start, this.stop, this.step);
 
   factory MonthRange(DateTime start, DateTime stop, [int stepInMonths]) {
-    if (stepInMonths == null)
+    if (stepInMonths == null) {
       stepInMonths = 1;
-    else {
-      if (stepInMonths <= 0)
+    } else {
+      if (stepInMonths <= 0) {
         throw ArgumentError.value(
             stepInMonths, 'stepInMonths', 'Must be greater than 0');
+      }
     }
     if (stop.isBefore(start)) stepInMonths = -stepInMonths;
     return MonthRange._(start, stop, stepInMonths);
@@ -52,10 +53,11 @@ class MonthRangeIterator implements Iterator<DateTime> {
 
   bool moveNext() {
     DateTime next;
-    if (_pos == null)
+    if (_pos == null) {
       next = _start;
-    else
+    } else {
       next = stepFunc(_pos, _step, _start.day);
+    }
 
     if (!_step.isNegative) {
       if (next.isAfter(_stop)) return false;
@@ -67,7 +69,7 @@ class MonthRangeIterator implements Iterator<DateTime> {
     return true;
   }
 
-  static const _day = const Duration(days: 1);
+  static const _day = Duration(days: 1);
 
   static DateTime _add(DateTime date, int steps, int preferDay) {
     int year = steps ~/ 12;

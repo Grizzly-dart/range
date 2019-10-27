@@ -17,8 +17,9 @@ class TimeRange extends IterableBase<DateTime> {
   ///
   ///     TimeRange(DateTime(2019, 1, 1), DateTime(2019, 1, 20), Duration(days: 1))
   factory TimeRange(DateTime start, DateTime stop, Duration step) {
-    if (step.isNegative)
+    if (step.isNegative) {
       throw ArgumentError.value(step, 'step', 'Must be greater than 0');
+    }
     if (stop.isBefore(start)) step = -step;
     return TimeRange._(start, stop, step);
   }
@@ -27,8 +28,9 @@ class TimeRange extends IterableBase<DateTime> {
     if (step == null) {
       step = 1;
     } else {
-      if (step <= 0)
+      if (step <= 0) {
         throw ArgumentError.value(step, 'step', 'Must be greater than 0');
+      }
     }
     return TimeRange(start, stop, Duration(microseconds: step));
   }
@@ -37,8 +39,9 @@ class TimeRange extends IterableBase<DateTime> {
     if (step == null) {
       step = 1;
     } else {
-      if (step <= 0)
+      if (step <= 0) {
         throw ArgumentError.value(step, 'step', 'Must be greater than 0');
+      }
     }
     return TimeRange(start, stop, Duration(milliseconds: step));
   }
@@ -47,8 +50,9 @@ class TimeRange extends IterableBase<DateTime> {
     if (step == null) {
       step = 1;
     } else {
-      if (step <= 0)
+      if (step <= 0) {
         throw ArgumentError.value(step, 'step', 'Must be greater than 0');
+      }
     }
     return TimeRange(start, stop, Duration(seconds: step));
   }
@@ -57,8 +61,9 @@ class TimeRange extends IterableBase<DateTime> {
     if (step == null) {
       step = 1;
     } else {
-      if (step <= 0)
+      if (step <= 0) {
         throw ArgumentError.value(step, 'step', 'Must be greater than 0');
+      }
     }
     return TimeRange(start, stop, Duration(minutes: step));
   }
@@ -67,8 +72,9 @@ class TimeRange extends IterableBase<DateTime> {
     if (step == null) {
       step = 1;
     } else {
-      if (step <= 0)
+      if (step <= 0) {
         throw ArgumentError.value(step, 'step', 'Must be greater than 0');
+      }
     }
     return TimeRange(start, stop, Duration(hours: step));
   }
@@ -77,8 +83,9 @@ class TimeRange extends IterableBase<DateTime> {
     if (step == null) {
       step = 1;
     } else {
-      if (step <= 0)
+      if (step <= 0) {
         throw ArgumentError.value(step, 'step', 'Must be greater than 0');
+      }
     }
     return TimeRange(start, stop, Duration(days: step));
   }
@@ -87,8 +94,9 @@ class TimeRange extends IterableBase<DateTime> {
     if (step == null) {
       step = 1;
     } else {
-      if (step <= 0)
+      if (step <= 0) {
         throw ArgumentError.value(step, 'step', 'Must be greater than 0');
+      }
     }
     return TimeRange(start, stop, Duration(days: step * 7));
   }
@@ -98,16 +106,18 @@ class TimeRange extends IterableBase<DateTime> {
   int get length {
     if (step.inMicroseconds == 0) throw Exception("Step cannot be 0");
     if (!step.isNegative) {
-      if (start.isAfter(stop))
+      if (start.isAfter(stop)) {
         throw Exception("start cannot be after stop when step is positive!");
+      }
       int ret =
           (stop.difference(start).inMicroseconds / step.inMicroseconds).ceil();
       final last = start.add(step * ret);
       if (last.isBefore(stop) || last.isAtSameMomentAs(stop)) ret++;
       return ret;
     } else {
-      if (start.isBefore(stop))
+      if (start.isBefore(stop)) {
         throw Exception("start cannot be before stop when step is negative!");
+      }
       int ret =
           (start.difference(stop).inMicroseconds / -step.inMicroseconds).ceil();
       final last = start.add(step * ret);
@@ -142,10 +152,11 @@ class TimeRangeIterator implements Iterator<DateTime> {
 
   bool moveNext() {
     DateTime next;
-    if (_pos == null)
+    if (_pos == null) {
       next = _start;
-    else
+    } else {
       next = _pos.add(_step);
+    }
 
     if (!_step.isNegative) {
       if (next.isAfter(_stop)) return false;

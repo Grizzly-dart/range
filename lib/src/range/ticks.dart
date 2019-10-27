@@ -26,7 +26,7 @@ Iterable<num> ticks(num start, num stop, num count) {
     // Positive step
     start = (start / step).ceil();
     stop = (stop / step).floor();
-    final int len = (stop - start + 1).ceil();
+    final int len = (stop - start).ceil();
     final ticks = List<num>(len);
     for (int i = 0; i < len; i++) {
       ticks[i] = (start + i) * step;
@@ -37,7 +37,7 @@ Iterable<num> ticks(num start, num stop, num count) {
     // Negative step
     start = (start * step).floor();
     stop = (stop * step).ceil();
-    final int len = (stop - start + 1).ceil();
+    final int len = (stop - start).ceil();
     final ticks = List<num>(len);
     for (int i = 0; i < len; i++) {
       ticks[i] = (start - i) / step;
