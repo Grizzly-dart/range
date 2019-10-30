@@ -43,7 +43,7 @@ class Extent<E> {
   bool has(E input) {
     if (comparator(lower, upper) == 0) return lower == input;
 
-    if (comparator(lower, upper) < 0) {
+    if (isAscending) {
       return comparator(input, lower) >= 0 && comparator(input, upper) <= 0;
     } else {
       return comparator(input, upper) >= 0 && comparator(input, lower) <= 0;

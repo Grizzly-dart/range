@@ -22,29 +22,15 @@ Iterable<num> ticks(num start, num stop, num count) {
   // If step is 0 or infinite, can't compute ticks
   if (step == 0 || step.isInfinite) return <num>[];
 
-  if (step > 0) {
-    // Positive step
-    start = (start / step).ceil();
-    stop = (stop / step).floor();
-    final int len = (stop - start).ceil();
-    final ticks = List<num>(len);
-    for (int i = 0; i < len; i++) {
-      ticks[i] = (start + i) * step;
-    }
-
-    return isReverse ? ticks.reversed : ticks;
-  } else {
-    // Negative step
-    start = (start * step).floor();
-    stop = (stop * step).ceil();
-    final int len = (stop - start).ceil();
-    final ticks = List<num>(len);
-    for (int i = 0; i < len; i++) {
-      ticks[i] = (start - i) / step;
-    }
-
-    return isReverse ? ticks.reversed : ticks;
+  start = (start / step).floor();
+  stop = (stop / step).ceil();
+  final int len = (stop - start).ceil();
+  final ticks = List<num>(len);
+  for (int i = 0; i < len; i++) {
+    ticks[i] = (start + i) * step;
   }
+
+  return isReverse ? ticks.reversed : ticks;
 }
 
 num tickIncrement(num start, num stop, int count) {
@@ -54,24 +40,26 @@ num tickIncrement(num start, num stop, int count) {
   final double error = step / exp;
 
   if (power >= 0) {
-    if (error >= _e10)
+    if (error >= _e10) {
       return 10 * exp;
-    else if (error >= _e5)
+    } else if (error >= _e5) {
       return 5 * exp;
-    else if (error >= _e2)
+    } else if (error >= _e2) {
       return 2 * exp;
-    else
+    } else {
       return 1 * exp;
+    }
   } else {
     final num negExp = -math.pow(10, -power);
-    if (error >= _e10)
+    if (error >= _e10) {
       return negExp / 10;
-    else if (error >= _e5)
+    } else if (error >= _e5) {
       return negExp / 5;
-    else if (error >= _e2)
+    } else if (error >= _e2) {
       return negExp / 2;
-    else
+    } else {
       return negExp;
+    }
   }
 }
 

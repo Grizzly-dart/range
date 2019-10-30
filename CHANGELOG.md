@@ -1,6 +1,10 @@
+## 2.0.6
+
++ Fixed `ticks`
+
 ## 2.0.5
 
-++ Added `Extent.consecutive` constructor
++ Added `Extent.consecutive` constructor
 
 ## 2.0.4
 

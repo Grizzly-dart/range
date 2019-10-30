@@ -42,11 +42,12 @@ class IntRange extends IterableBase<int> {
   ///
   ///     print(IntRange(0, 5)); => (0, 1, 2, 3, 4, 5)
   factory IntRange(int start, int stop, [int step]) {
-    if (step == null)
+    if (step == null) {
       step = 1;
-    else {
-      if (step <= 0)
+    } else {
+      if (step <= 0) {
         throw ArgumentError.value(step, 'step', 'Must be greater than 0');
+      }
     }
     if (stop < start) step = -step;
     return IntRange._(start, stop, step);
@@ -57,11 +58,12 @@ class IntRange extends IterableBase<int> {
   ///
   ///     print(IntRange.until(5, 2)); => (0, 2, 4)
   factory IntRange.until(int stop, [int step]) {
-    if (step == null)
+    if (step == null) {
       step = 1;
-    else {
-      if (step <= 0)
+    } else {
+      if (step <= 0) {
         throw ArgumentError.value(step, 'step', 'Must be greater than 0');
+      }
     }
     if (stop < 0) step = -step;
     return IntRange._(0, stop, step);
@@ -76,10 +78,11 @@ class IntRange extends IterableBase<int> {
       throw ArgumentError.value(count, 'count', 'Must be a positive integer');
 
     int step = 0;
-    if (stop > start)
+    if (stop > start) {
       step = (stop - start + 1) ~/ count;
-    else
+    } else {
       step = (start - stop + 1) ~/ count;
+    }
 
     if (step == 0) step = 1;
     if (stop < step) step = -step;
@@ -92,14 +95,16 @@ class IntRange extends IterableBase<int> {
   int get length {
     if (step == 0) throw Exception("Step cannot be 0");
     if (!step.isNegative) {
-      if (start > stop)
+      if (start > stop) {
         throw Exception(
             "start cannot be greater than stop when step is positive!");
+      }
       return ((stop - start + 1) / step).ceil();
     } else {
-      if (start < stop)
+      if (start < stop) {
         throw Exception(
             "start cannot be less than stop when step is negative!");
+      }
       return ((start - stop + 1) / -step).ceil();
     }
   }
@@ -130,10 +135,11 @@ class IntRangeIterator implements Iterator<int> {
 
   bool moveNext() {
     int next;
-    if (_pos == null)
+    if (_pos == null) {
       next = _start;
-    else
+    } else {
       next = _pos + _step;
+    }
 
     if (_step > 0) {
       if (next > _stop) return false;
