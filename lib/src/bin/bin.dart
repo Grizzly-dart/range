@@ -1,9 +1,11 @@
 import 'package:grizzly_range/grizzly_range.dart';
+import 'package:meta/meta.dart';
 
 typedef Accessor<L, D> = L Function(D input);
 
 L identityAccessor<L, D>(D data) => data as L;
 
+@experimental
 class Bin<L, D> {
   final Extent<L> limit;
 

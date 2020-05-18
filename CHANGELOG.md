@@ -1,3 +1,7 @@
+## 2.0.9
+
++ Deprecated `Extent.consecutive`. Use `Extent.edgesToBins` instead
+
 ## 2.0.8
 
 + `Extent` is not `Comparable`

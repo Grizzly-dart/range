@@ -115,7 +115,12 @@ class Extent<E> implements Comparable<Extent<E>> {
     return Extent<E>(min, max, comparator: comparator);
   }
 
+  @Deprecated('Use edgesToBins instead')
   static List<Extent<E>> consecutive<E>(Iterable<E> data,
+          {Comparator comparator}) =>
+      edgesToBins(data, comparator: comparator);
+
+  static List<Extent<E>> edgesToBins<E>(Iterable<E> data,
       {Comparator comparator}) {
     if (data.length <= 1) return [];
 
