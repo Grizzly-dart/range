@@ -1,4 +1,4 @@
-part of grizzly.viz.scales.ranger;
+part of grizzly.range.range;
 
 class MonthRange extends IterableBase<DateTime> {
   /// Starting value of the range
@@ -25,12 +25,16 @@ class MonthRange extends IterableBase<DateTime> {
     return MonthRange._(start, stop, stepInMonths);
   }
 
+  @override
   Iterator<DateTime> get iterator => MonthRangeIterator(start, stop, step);
 
+  @override
   bool get isEmpty => length == 0;
 
+  @override
   int get hashCode => hash3(start, stop, step);
 
+  @override
   bool operator ==(other) =>
       other is MonthRange &&
       start == other.start &&
@@ -49,8 +53,10 @@ class MonthRangeIterator implements Iterator<DateTime> {
         _stop = stop,
         _step = step;
 
+  @override
   DateTime get current => _pos;
 
+  @override
   bool moveNext() {
     DateTime next;
     if (_pos == null) {

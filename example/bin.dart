@@ -10,7 +10,7 @@ class Data {
   Data(this.x, this.y1, this.y2);
 }
 
-main() {
+void main() {
   final bins = Bin.compute(<int>[11, 888, 10], <int>[0, 10, 100, 1000]);
   print(bins);
   // TODO

@@ -11,7 +11,7 @@ void main() {
     });
 
     test('reverse', () {
-      final ranger = IntRange(100, 0, -10);
+      final ranger = IntRange(100, 0, 10);
       expect(ranger, List.generate(11, (i) => i * 10).reversed);
     });
 
@@ -24,7 +24,7 @@ void main() {
     });
 
     test('until.neg stop', () {
-      final ranger = IntRange.until(-10, -2);
+      final ranger = IntRange.until(-10, 2);
       expect(ranger, List.generate(6, (i) => -i * 2));
     });
   });

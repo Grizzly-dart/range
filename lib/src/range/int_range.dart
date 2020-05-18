@@ -1,4 +1,4 @@
-part of grizzly.viz.scales.ranger;
+part of grizzly.range.range;
 
 //Copyright (c) 2011 Olov Lassus <olov.lassus@gmail.com>
 //
@@ -74,8 +74,9 @@ class IntRange extends IterableBase<int> {
   ///
   ///     print(IntRange.linspace(1, 10, 5)); => (1, 3, 5, 7, 9)
   factory IntRange.linspace(int start, int stop, int count) {
-    if (count <= 0)
+    if (count <= 0) {
       throw ArgumentError.value(count, 'count', 'Must be a positive integer');
+    }
 
     int step = 0;
     if (stop > start) {
@@ -90,29 +91,34 @@ class IntRange extends IterableBase<int> {
     return IntRange._(start, stop, step);
   }
 
+  @override
   Iterator<int> get iterator => IntRangeIterator(start, stop, step);
 
+  @override
   int get length {
-    if (step == 0) throw Exception("Step cannot be 0");
+    if (step == 0) throw Exception('Step cannot be 0');
     if (!step.isNegative) {
       if (start > stop) {
         throw Exception(
-            "start cannot be greater than stop when step is positive!");
+            'start cannot be greater than stop when step is positive!');
       }
       return ((stop - start + 1) / step).ceil();
     } else {
       if (start < stop) {
         throw Exception(
-            "start cannot be less than stop when step is negative!");
+            'start cannot be less than stop when step is negative!');
       }
       return ((start - stop + 1) / -step).ceil();
     }
   }
 
+  @override
   bool get isEmpty => length == 0;
 
+  @override
   int get hashCode => hash3(start, stop, step);
 
+  @override
   bool operator ==(other) =>
       other is IntRange &&
       start == other.start &&
@@ -131,8 +137,10 @@ class IntRangeIterator implements Iterator<int> {
         _stop = stop,
         _step = step;
 
+  @override
   int get current => _pos;
 
+  @override
   bool moveNext() {
     int next;
     if (_pos == null) {

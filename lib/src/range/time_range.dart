@@ -1,4 +1,4 @@
-part of grizzly.viz.scales.ranger;
+part of grizzly.range.range;
 
 class TimeRange extends IterableBase<DateTime> {
   /// Starting value of the range
@@ -101,13 +101,15 @@ class TimeRange extends IterableBase<DateTime> {
     return TimeRange(start, stop, Duration(days: step * 7));
   }
 
+  @override
   Iterator<DateTime> get iterator => TimeRangeIterator(start, stop, step);
 
+  @override
   int get length {
-    if (step.inMicroseconds == 0) throw Exception("Step cannot be 0");
+    if (step.inMicroseconds == 0) throw Exception('Step cannot be 0');
     if (!step.isNegative) {
       if (start.isAfter(stop)) {
-        throw Exception("start cannot be after stop when step is positive!");
+        throw Exception('start cannot be after stop when step is positive!');
       }
       int ret =
           (stop.difference(start).inMicroseconds / step.inMicroseconds).ceil();
@@ -116,7 +118,7 @@ class TimeRange extends IterableBase<DateTime> {
       return ret;
     } else {
       if (start.isBefore(stop)) {
-        throw Exception("start cannot be before stop when step is negative!");
+        throw Exception('start cannot be before stop when step is negative!');
       }
       int ret =
           (start.difference(stop).inMicroseconds / -step.inMicroseconds).ceil();
@@ -126,10 +128,13 @@ class TimeRange extends IterableBase<DateTime> {
     }
   }
 
+  @override
   bool get isEmpty => length == 0;
 
+  @override
   int get hashCode => hash3(start, stop, step);
 
+  @override
   bool operator ==(other) =>
       other is TimeRange &&
       start == other.start &&
@@ -148,8 +153,10 @@ class TimeRangeIterator implements Iterator<DateTime> {
         _stop = stop,
         _step = step;
 
+  @override
   DateTime get current => _pos;
 
+  @override
   bool moveNext() {
     DateTime next;
     if (_pos == null) {

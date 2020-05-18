@@ -1,6 +1,6 @@
 import 'package:grizzly_range/grizzly_range.dart';
 
-main() {
+void main() {
   print(ticks(1, 10, 5));
   print(ticks(-9, 9, 5));
   print(ticks(9, -9, 5));

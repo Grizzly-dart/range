@@ -6,7 +6,7 @@ import 'package:quiver_hashcode/hashcode.dart';
 /// Encloses an extent with a [lower] limit and [upper] limit, both inclusive
 ///
 ///     final extent = Extent<int>(5, 10);
-class Extent<E> {
+class Extent<E> implements Comparable<Extent<E>> {
   /// Inclusive lower limit of the extent
   final E lower;
 
@@ -23,6 +23,7 @@ class Extent<E> {
   List<E> asList() => <E>[lower, upper];
 
   /// Compares if [this] and [other] are equal
+  @override
   bool operator ==(other) {
     if (other is Extent<E>) {
       if (other.lower != lower) return false;
@@ -74,9 +75,27 @@ class Extent<E> {
       }
     }
 
-    throw UnsupportedError("range is not supported for $E");
+    throw UnsupportedError('range is not supported for $E');
   }
 
+  Iterable<E> linspace(count) {
+    if (E == int) {
+      return IntRange.linspace(lower as int, upper as int, count)
+          as Iterable<E>;
+    } else if (E == double) {
+      return DoubleRange.linspace(lower as double, upper as double, count)
+          as Iterable<E>;
+    }
+
+    throw UnsupportedError('range is not supported for $E');
+  }
+
+  @override
+  int compareTo(Extent<E> other) {
+    return comparator(lower, other.lower);
+  }
+
+  @override
   String toString() => 'Extent [$lower, $upper]';
 
   /// Computes an [Extent] from given [data] by finding the minimum and maximum.

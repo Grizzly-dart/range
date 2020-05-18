@@ -1,3 +1,9 @@
+## 2.0.8
+
++ `Extent` is not `Comparable`
++ Added `Extent.linspace`
++ Dart analyzer improvements
+
 ## 2.0.6
 
 + Fixed `ticks`

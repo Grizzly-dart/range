@@ -11,7 +11,7 @@ void main() {
     });
 
     test('reverse', () {
-      final ranger = DoubleRange(100.0, 0.0, -10.0);
+      final ranger = DoubleRange(100.0, 0.0, 10.0);
       expect(ranger, List.generate(11, (i) => i * 10).reversed);
     });
 
@@ -21,39 +21,30 @@ void main() {
     });
 
     test('until.neg stop', () {
-      final ranger = DoubleRange.until(-10.0, -2.0);
+      final ranger = DoubleRange.until(-10.0, 2.0);
       expect(ranger, List.generate(6, (i) => -i * 2));
     });
 
     test('linspace.normal', () {
       final ranger = DoubleRange.linspace(0.0, 100.0, 10);
-      expect(ranger, [
-        0.0,
-        11.11111111111111,
-        22.22222222222222,
-        33.33333333333333,
-        44.44444444444444,
-        55.55555555555556,
-        66.66666666666667,
-        77.77777777777779,
-        88.8888888888889,
-        100.00000000000001
-      ]);
+      expect(ranger,
+          [0.0, 10.0, 20.0, 30.0, 40.0, 50.0, 60.0, 70.0, 80.0, 90.0, 100.0]);
     });
 
     test('linspace.unit_space', () {
       final ranger = DoubleRange.linspace(0.0, 1.0, 10);
       expect(ranger, [
         0.0,
-        0.1111111111111111,
-        0.2222222222222222,
-        0.3333333333333333,
-        0.4444444444444444,
-        0.5555555555555556,
-        0.6666666666666667,
-        0.7777777777777779,
-        0.8888888888888891,
-        1.0000000000000002
+        0.1,
+        0.2,
+        0.30000000000000004,
+        0.4,
+        0.5,
+        0.6,
+        0.7,
+        0.7999999999999999,
+        0.8999999999999999,
+        0.9999999999999999
       ]);
     });
   });

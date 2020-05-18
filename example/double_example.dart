@@ -1,6 +1,6 @@
 import 'package:grizzly_range/grizzly_range.dart';
 
-main() {
+void main() {
   print(DoubleRange(0, 5, 0.5));
   print(DoubleRange(5, -5));
   print(DoubleRange.until(5, 2));

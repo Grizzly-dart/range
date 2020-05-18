@@ -17,6 +17,7 @@ class Bin<L, D> {
 
   bool limitHasItem(D input) => limit.has(accessor(input));
 
+  @override
   String toString() => 'Bin(limit: $limit, items: $items)';
 
   /// Bins the provided input [data] based on given [thresholds]
@@ -37,7 +38,7 @@ class Bin<L, D> {
       itemBins[index].add(item);
     }
 
-    final ret = List<Bin<L, D>>()..length = limits.length;
+    final ret = <Bin<L, D>>[]..length = limits.length;
     for (int i = 0; i < limits.length; i++) {
       ret[i] = Bin<L, D>(limits[i], itemBins[i], accessor: accessor);
     }
@@ -48,10 +49,11 @@ class Bin<L, D> {
   /// Converts given [thresholds] into [Extent]s.
   static List<Extent<E>> thresholdsToLimits<E>(Iterable<E> thresholds,
       {Comparator comparator}) {
-    if (thresholds.length < 2)
-      throw UnsupportedError("There should be atleast 2 elements in threshold");
+    if (thresholds.length < 2) {
+      throw UnsupportedError('There should be atleast 2 elements in threshold');
+    }
 
-    final ret = List<Extent<E>>()..length = thresholds.length - 1;
+    final ret = <Extent<E>>[]..length = thresholds.length - 1;
     E prev = thresholds.first;
     int i = 0;
     bool isAscending;
@@ -61,7 +63,7 @@ class Bin<L, D> {
         isAscending = extent.isAscending;
       } else {
         if (isAscending != extent.isAscending) {
-          throw UnsupportedError("Thresholds should be monotonic");
+          throw UnsupportedError('Thresholds should be monotonic');
         }
       }
       ret[i++] = extent;

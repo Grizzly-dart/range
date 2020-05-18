@@ -1,4 +1,4 @@
-library grizzly.viz.scales.ranger;
+library grizzly.range.range;
 
 import 'dart:math' as math;
 import 'dart:collection';

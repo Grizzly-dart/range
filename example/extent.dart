@@ -1,7 +1,7 @@
 import 'package:grizzly_range/grizzly_range.dart';
 import 'package:grizzly_range/src/extent/extent.dart';
 
-main() {
+void main() {
   print(Extent(5, 50).range(5));
   print(Extent(5, 50).range(5));
 

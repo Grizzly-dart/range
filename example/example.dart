@@ -1,6 +1,6 @@
 import 'package:grizzly_range/grizzly_range.dart';
 
-main() {
+void main() {
   print(IntRange(0, 5));
   print(IntRange(5, -5));
   print(IntRange.until(5, 2));
