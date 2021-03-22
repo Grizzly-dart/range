@@ -1,6 +1,6 @@
 part of grizzly.range.range;
 
-class MonthRange extends IterableBase<DateTime> {
+class MonthRange extends IterableBase<DateTime?> {
   /// Starting value of the range
   final DateTime start;
 
@@ -12,7 +12,7 @@ class MonthRange extends IterableBase<DateTime> {
 
   MonthRange._(this.start, this.stop, this.step);
 
-  factory MonthRange(DateTime start, DateTime stop, [int stepInMonths]) {
+  factory MonthRange(DateTime start, DateTime stop, [int? stepInMonths]) {
     if (stepInMonths == null) {
       stepInMonths = 1;
     } else {
@@ -26,7 +26,7 @@ class MonthRange extends IterableBase<DateTime> {
   }
 
   @override
-  Iterator<DateTime> get iterator => MonthRangeIterator(start, stop, step);
+  Iterator<DateTime?> get iterator => MonthRangeIterator(start, stop, step);
 
   @override
   bool get isEmpty => length == 0;
@@ -42,9 +42,9 @@ class MonthRange extends IterableBase<DateTime> {
       step == other.step;
 }
 
-class MonthRangeIterator implements Iterator<DateTime> {
+class MonthRangeIterator implements Iterator<DateTime?> {
   final DateTime _start;
-  DateTime _pos;
+  DateTime? _pos;
   final DateTime _stop;
   final int _step;
 
@@ -54,7 +54,7 @@ class MonthRangeIterator implements Iterator<DateTime> {
         _step = step;
 
   @override
-  DateTime get current => _pos;
+  DateTime? get current => _pos;
 
   @override
   bool moveNext() {
@@ -137,9 +137,9 @@ class MonthRangeIterator implements Iterator<DateTime> {
     return ret;
   }
 
-  static DateTime stepFunc(DateTime date, int steps, int preferDay) {
-    if (!steps.isNegative) return _add(date, steps, preferDay);
-    return _subtract(date, steps, preferDay);
+  static DateTime stepFunc(DateTime? date, int steps, int preferDay) {
+    if (!steps.isNegative) return _add(date!, steps, preferDay);
+    return _subtract(date!, steps, preferDay);
   }
 }
 

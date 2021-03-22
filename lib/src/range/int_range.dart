@@ -25,7 +25,7 @@ part of grizzly.range.range;
 /// Iterable of integers similar to python's range.
 ///
 ///     for(final i in IntRange(0, 5)) print(i);
-class IntRange extends IterableBase<int> {
+class IntRange extends IterableBase<int?> {
   /// Starting value of the range
   final int start;
 
@@ -41,7 +41,7 @@ class IntRange extends IterableBase<int> {
   /// with [step].
   ///
   ///     print(IntRange(0, 5)); => (0, 1, 2, 3, 4, 5)
-  factory IntRange(int start, int stop, [int step]) {
+  factory IntRange(int start, int stop, [int? step]) {
     if (step == null) {
       step = 1;
     } else {
@@ -57,7 +57,7 @@ class IntRange extends IterableBase<int> {
   /// [step].
   ///
   ///     print(IntRange.until(5, 2)); => (0, 2, 4)
-  factory IntRange.until(int stop, [int step]) {
+  factory IntRange.until(int stop, [int? step]) {
     if (step == null) {
       step = 1;
     } else {
@@ -92,7 +92,7 @@ class IntRange extends IterableBase<int> {
   }
 
   @override
-  Iterator<int> get iterator => IntRangeIterator(start, stop, step);
+  Iterator<int?> get iterator => IntRangeIterator(start, stop, step);
 
   @override
   int get length {
@@ -126,9 +126,9 @@ class IntRange extends IterableBase<int> {
       step == other.step;
 }
 
-class IntRangeIterator implements Iterator<int> {
+class IntRangeIterator implements Iterator<int?> {
   final int _start;
-  int _pos;
+  int? _pos;
   final int _stop;
   final int _step;
 
@@ -138,7 +138,7 @@ class IntRangeIterator implements Iterator<int> {
         _step = step;
 
   @override
-  int get current => _pos;
+  int? get current => _pos;
 
   @override
   bool moveNext() {
@@ -146,7 +146,7 @@ class IntRangeIterator implements Iterator<int> {
     if (_pos == null) {
       next = _start;
     } else {
-      next = _pos + _step;
+      next = _pos! + _step;
     }
 
     if (_step > 0) {

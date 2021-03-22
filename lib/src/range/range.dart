@@ -45,7 +45,7 @@ Iterable<T> until<T>(T stop, [step]) {
   throw Exception('Unknown type $T');
 }
 
-Iterable<int> indices(int length) => IntRange(0, length - 1);
+Iterable<int?> indices(int length) => IntRange(0, length - 1);
 
 Iterable<T> linspace<T extends num>(T start, T stop, [int count = 100]) {
   if (start is int) {

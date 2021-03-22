@@ -1,6 +1,6 @@
 part of grizzly.range.range;
 
-class TimeRange extends IterableBase<DateTime> {
+class TimeRange extends IterableBase<DateTime?> {
   /// Starting value of the range
   final DateTime start;
 
@@ -24,7 +24,7 @@ class TimeRange extends IterableBase<DateTime> {
     return TimeRange._(start, stop, step);
   }
 
-  factory TimeRange.us(DateTime start, DateTime stop, [int step]) {
+  factory TimeRange.us(DateTime start, DateTime stop, [int? step]) {
     if (step == null) {
       step = 1;
     } else {
@@ -35,7 +35,7 @@ class TimeRange extends IterableBase<DateTime> {
     return TimeRange(start, stop, Duration(microseconds: step));
   }
 
-  factory TimeRange.ms(DateTime start, DateTime stop, [int step]) {
+  factory TimeRange.ms(DateTime start, DateTime stop, [int? step]) {
     if (step == null) {
       step = 1;
     } else {
@@ -46,7 +46,7 @@ class TimeRange extends IterableBase<DateTime> {
     return TimeRange(start, stop, Duration(milliseconds: step));
   }
 
-  factory TimeRange.s(DateTime start, DateTime stop, [int step]) {
+  factory TimeRange.s(DateTime start, DateTime stop, [int? step]) {
     if (step == null) {
       step = 1;
     } else {
@@ -57,7 +57,7 @@ class TimeRange extends IterableBase<DateTime> {
     return TimeRange(start, stop, Duration(seconds: step));
   }
 
-  factory TimeRange.m(DateTime start, DateTime stop, [int step]) {
+  factory TimeRange.m(DateTime start, DateTime stop, [int? step]) {
     if (step == null) {
       step = 1;
     } else {
@@ -68,7 +68,7 @@ class TimeRange extends IterableBase<DateTime> {
     return TimeRange(start, stop, Duration(minutes: step));
   }
 
-  factory TimeRange.h(DateTime start, DateTime stop, [int step]) {
+  factory TimeRange.h(DateTime start, DateTime stop, [int? step]) {
     if (step == null) {
       step = 1;
     } else {
@@ -79,7 +79,7 @@ class TimeRange extends IterableBase<DateTime> {
     return TimeRange(start, stop, Duration(hours: step));
   }
 
-  factory TimeRange.d(DateTime start, DateTime stop, [int step]) {
+  factory TimeRange.d(DateTime start, DateTime stop, [int? step]) {
     if (step == null) {
       step = 1;
     } else {
@@ -90,7 +90,7 @@ class TimeRange extends IterableBase<DateTime> {
     return TimeRange(start, stop, Duration(days: step));
   }
 
-  factory TimeRange.w(DateTime start, DateTime stop, [int step]) {
+  factory TimeRange.w(DateTime start, DateTime stop, [int? step]) {
     if (step == null) {
       step = 1;
     } else {
@@ -102,7 +102,7 @@ class TimeRange extends IterableBase<DateTime> {
   }
 
   @override
-  Iterator<DateTime> get iterator => TimeRangeIterator(start, stop, step);
+  Iterator<DateTime?> get iterator => TimeRangeIterator(start, stop, step);
 
   @override
   int get length {
@@ -142,8 +142,8 @@ class TimeRange extends IterableBase<DateTime> {
       step == other.step;
 }
 
-class TimeRangeIterator implements Iterator<DateTime> {
-  DateTime _pos;
+class TimeRangeIterator implements Iterator<DateTime?> {
+  DateTime? _pos;
   final DateTime _start;
   final DateTime _stop;
   final Duration _step;
@@ -154,7 +154,7 @@ class TimeRangeIterator implements Iterator<DateTime> {
         _step = step;
 
   @override
-  DateTime get current => _pos;
+  DateTime? get current => _pos;
 
   @override
   bool moveNext() {
@@ -162,7 +162,7 @@ class TimeRangeIterator implements Iterator<DateTime> {
     if (_pos == null) {
       next = _start;
     } else {
-      next = _pos.add(_step);
+      next = _pos!.add(_step);
     }
 
     if (!_step.isNegative) {

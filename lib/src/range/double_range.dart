@@ -1,6 +1,6 @@
 part of grizzly.range.range;
 
-class DoubleRange extends IterableBase<double> {
+class DoubleRange extends IterableBase<double?> {
   /// Starting value of the range
   final double start;
 
@@ -12,7 +12,7 @@ class DoubleRange extends IterableBase<double> {
 
   DoubleRange._(this.start, this.stop, this.step);
 
-  factory DoubleRange(double start, double stop, [double step]) {
+  factory DoubleRange(double start, double stop, [double? step]) {
     if (step == null) {
       step = 1;
     } else {
@@ -56,7 +56,7 @@ class DoubleRange extends IterableBase<double> {
   }
 
   @override
-  Iterator<double> get iterator => DoubleRangeIterator(start, stop, step);
+  Iterator<double?> get iterator => DoubleRangeIterator(start, stop, step);
 
   @override
   int get length {
@@ -94,8 +94,8 @@ class DoubleRange extends IterableBase<double> {
       step == other.step;
 }
 
-class DoubleRangeIterator implements Iterator<double> {
-  double _pos;
+class DoubleRangeIterator implements Iterator<double?> {
+  double? _pos;
   final double _start;
   final double _stop;
   final double _step;
@@ -106,7 +106,7 @@ class DoubleRangeIterator implements Iterator<double> {
         _step = step;
 
   @override
-  double get current => _pos;
+  double? get current => _pos;
 
   @override
   bool moveNext() {
@@ -114,7 +114,7 @@ class DoubleRangeIterator implements Iterator<double> {
     if (_pos == null) {
       next = _start;
     } else {
-      next = _pos + _step;
+      next = _pos! + _step;
     }
 
     if (_step > 0) {
