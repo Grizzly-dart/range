@@ -24,80 +24,59 @@ class TimeRange extends IterableBase<DateTime> {
     return TimeRange._(start, stop, step);
   }
 
-  factory TimeRange.us(DateTime start, DateTime stop, [int step]) {
-    if (step == null) {
-      step = 1;
-    } else {
-      if (step <= 0) {
-        throw ArgumentError.value(step, 'step', 'Must be greater than 0');
-      }
+  factory TimeRange.us(DateTime start, DateTime stop, [int step = 1]) {
+    if (step <= 0) {
+      throw ArgumentError.value(step, 'step', 'Must be greater than 0');
     }
+
     return TimeRange(start, stop, Duration(microseconds: step));
   }
 
-  factory TimeRange.ms(DateTime start, DateTime stop, [int step]) {
-    if (step == null) {
-      step = 1;
-    } else {
-      if (step <= 0) {
-        throw ArgumentError.value(step, 'step', 'Must be greater than 0');
-      }
+  factory TimeRange.ms(DateTime start, DateTime stop, [int step = 1]) {
+    if (step <= 0) {
+      throw ArgumentError.value(step, 'step', 'Must be greater than 0');
     }
+
     return TimeRange(start, stop, Duration(milliseconds: step));
   }
 
-  factory TimeRange.s(DateTime start, DateTime stop, [int step]) {
-    if (step == null) {
-      step = 1;
-    } else {
-      if (step <= 0) {
-        throw ArgumentError.value(step, 'step', 'Must be greater than 0');
-      }
+  factory TimeRange.s(DateTime start, DateTime stop, [int step = 1]) {
+    if (step <= 0) {
+      throw ArgumentError.value(step, 'step', 'Must be greater than 0');
     }
+
     return TimeRange(start, stop, Duration(seconds: step));
   }
 
-  factory TimeRange.m(DateTime start, DateTime stop, [int step]) {
-    if (step == null) {
-      step = 1;
-    } else {
-      if (step <= 0) {
-        throw ArgumentError.value(step, 'step', 'Must be greater than 0');
-      }
+  factory TimeRange.m(DateTime start, DateTime stop, [int step = 1]) {
+    if (step <= 0) {
+      throw ArgumentError.value(step, 'step', 'Must be greater than 0');
     }
+
     return TimeRange(start, stop, Duration(minutes: step));
   }
 
-  factory TimeRange.h(DateTime start, DateTime stop, [int step]) {
-    if (step == null) {
-      step = 1;
-    } else {
-      if (step <= 0) {
-        throw ArgumentError.value(step, 'step', 'Must be greater than 0');
-      }
+  factory TimeRange.h(DateTime start, DateTime stop, [int step = 1]) {
+    if (step <= 0) {
+      throw ArgumentError.value(step, 'step', 'Must be greater than 0');
     }
+
     return TimeRange(start, stop, Duration(hours: step));
   }
 
-  factory TimeRange.d(DateTime start, DateTime stop, [int step]) {
-    if (step == null) {
-      step = 1;
-    } else {
-      if (step <= 0) {
-        throw ArgumentError.value(step, 'step', 'Must be greater than 0');
-      }
+  factory TimeRange.d(DateTime start, DateTime stop, [int step = 1]) {
+    if (step <= 0) {
+      throw ArgumentError.value(step, 'step', 'Must be greater than 0');
     }
+
     return TimeRange(start, stop, Duration(days: step));
   }
 
-  factory TimeRange.w(DateTime start, DateTime stop, [int step]) {
-    if (step == null) {
-      step = 1;
-    } else {
-      if (step <= 0) {
-        throw ArgumentError.value(step, 'step', 'Must be greater than 0');
-      }
+  factory TimeRange.w(DateTime start, DateTime stop, [int step = 1]) {
+    if (step <= 0) {
+      throw ArgumentError.value(step, 'step', 'Must be greater than 0');
     }
+
     return TimeRange(start, stop, Duration(days: step * 7));
   }
 
@@ -143,7 +122,7 @@ class TimeRange extends IterableBase<DateTime> {
 }
 
 class TimeRangeIterator implements Iterator<DateTime> {
-  DateTime _pos;
+  DateTime? _pos;
   final DateTime _start;
   final DateTime _stop;
   final Duration _step;
@@ -154,7 +133,13 @@ class TimeRangeIterator implements Iterator<DateTime> {
         _step = step;
 
   @override
-  DateTime get current => _pos;
+  DateTime get current {
+    if(_pos == null) {
+      throw Exception('iterator not initialized');
+    }
+
+    return _pos!;
+  }
 
   @override
   bool moveNext() {
@@ -162,7 +147,7 @@ class TimeRangeIterator implements Iterator<DateTime> {
     if (_pos == null) {
       next = _start;
     } else {
-      next = _pos.add(_step);
+      next = _pos!.add(_step);
     }
 
     if (!_step.isNegative) {

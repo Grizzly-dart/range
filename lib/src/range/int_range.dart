@@ -41,14 +41,11 @@ class IntRange extends IterableBase<int> {
   /// with [step].
   ///
   ///     print(IntRange(0, 5)); => (0, 1, 2, 3, 4, 5)
-  factory IntRange(int start, int stop, [int step]) {
-    if (step == null) {
-      step = 1;
-    } else {
-      if (step <= 0) {
-        throw ArgumentError.value(step, 'step', 'Must be greater than 0');
-      }
+  factory IntRange(int start, int stop, [int step = 1]) {
+    if (step <= 0) {
+      throw ArgumentError.value(step, 'step', 'Must be greater than 0');
     }
+
     if (stop < start) step = -step;
     return IntRange._(start, stop, step);
   }
@@ -57,14 +54,11 @@ class IntRange extends IterableBase<int> {
   /// [step].
   ///
   ///     print(IntRange.until(5, 2)); => (0, 2, 4)
-  factory IntRange.until(int stop, [int step]) {
-    if (step == null) {
-      step = 1;
-    } else {
-      if (step <= 0) {
-        throw ArgumentError.value(step, 'step', 'Must be greater than 0');
-      }
+  factory IntRange.until(int stop, [int step = 1]) {
+    if (step <= 0) {
+      throw ArgumentError.value(step, 'step', 'Must be greater than 0');
     }
+
     if (stop < 0) step = -step;
     return IntRange._(0, stop, step);
   }
@@ -127,8 +121,8 @@ class IntRange extends IterableBase<int> {
 }
 
 class IntRangeIterator implements Iterator<int> {
+  int? _pos;
   final int _start;
-  int _pos;
   final int _stop;
   final int _step;
 
@@ -138,7 +132,13 @@ class IntRangeIterator implements Iterator<int> {
         _step = step;
 
   @override
-  int get current => _pos;
+  int get current {
+    if(_pos == null) {
+      throw Exception('iterator not initialized');
+    }
+
+    return _pos!;
+  }
 
   @override
   bool moveNext() {
@@ -146,7 +146,7 @@ class IntRangeIterator implements Iterator<int> {
     if (_pos == null) {
       next = _start;
     } else {
-      next = _pos + _step;
+      next = _pos! + _step;
     }
 
     if (_step > 0) {

@@ -2,7 +2,7 @@ library grizzly.range.range;
 
 import 'dart:collection';
 
-import 'package:quiver_hashcode/hashcode.dart';
+import 'package:quiver/core.dart';
 
 export 'ticks.dart';
 

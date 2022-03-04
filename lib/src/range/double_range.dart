@@ -12,27 +12,21 @@ class DoubleRange extends IterableBase<double> {
 
   DoubleRange._(this.start, this.stop, this.step);
 
-  factory DoubleRange(double start, double stop, [double step]) {
-    if (step == null) {
-      step = 1;
-    } else {
-      if (step <= 0) {
-        throw ArgumentError.value(step, 'step', 'Must be greater than 0');
-      }
+  factory DoubleRange(double start, double stop, [double step = 1]) {
+    if (step <= 0) {
+      throw ArgumentError.value(step, 'step', 'Must be greater than 0');
     }
+
     if (stop < start) step = -step;
     return DoubleRange._(start, stop, step);
   }
 
   /// Create a range [0, stop] with [step]
   factory DoubleRange.until(double stop, [double step = 1.0]) {
-    if (step == null) {
-      step = 1;
-    } else {
-      if (step <= 0) {
-        throw ArgumentError.value(step, 'step', 'Must be greater than 0');
-      }
+    if (step <= 0) {
+      throw ArgumentError.value(step, 'step', 'Must be greater than 0');
     }
+
     if (stop < 0) step = -step;
     return DoubleRange._(0.0, stop, step);
   }
@@ -95,7 +89,7 @@ class DoubleRange extends IterableBase<double> {
 }
 
 class DoubleRangeIterator implements Iterator<double> {
-  double _pos;
+  double? _pos;
   final double _start;
   final double _stop;
   final double _step;
@@ -106,7 +100,12 @@ class DoubleRangeIterator implements Iterator<double> {
         _step = step;
 
   @override
-  double get current => _pos;
+  double get current {
+    if(_pos == null) {
+      throw Exception('iterator not initialized');
+    }
+    return _pos!;
+  }
 
   @override
   bool moveNext() {
@@ -114,7 +113,7 @@ class DoubleRangeIterator implements Iterator<double> {
     if (_pos == null) {
       next = _start;
     } else {
-      next = _pos + _step;
+      next = _pos! + _step;
     }
 
     if (_step > 0) {

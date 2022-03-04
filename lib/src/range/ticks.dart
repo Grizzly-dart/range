@@ -8,7 +8,7 @@ import 'dart:math' as math;
 /// and stop values if (and only if) they are exact, nicely-rounded values
 /// consistent with the inferred step. More formally, each returned tick t
 /// satisfies start ≤ t and t ≤ stop.
-Iterable<num> ticks(num start, num stop, num count) {
+Iterable<num> ticks(num start, num stop, int count) {
   final bool isReverse = stop < start;
 
   if (isReverse) {
@@ -25,7 +25,7 @@ Iterable<num> ticks(num start, num stop, num count) {
   start = (start / step).floor();
   stop = (stop / step).ceil();
   final int len = (stop - start).ceil();
-  final ticks = List<num>(len);
+  final ticks = List<num>.filled(len, 0);
   for (int i = 0; i < len; i++) {
     ticks[i] = (start + i) * step;
   }

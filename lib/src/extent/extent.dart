@@ -1,7 +1,7 @@
 import 'package:collection/collection.dart';
 import 'package:grizzly_range/grizzly_range.dart';
 import 'package:grizzly_range/src/util/comparator.dart';
-import 'package:quiver_hashcode/hashcode.dart';
+import 'package:quiver/core.dart';
 
 /// Encloses an extent with a [lower] limit and [upper] limit, both inclusive
 ///
@@ -16,7 +16,7 @@ class Extent<E> implements Comparable<Extent<E>> {
   final Comparator comparator;
 
   /// Creates an extent with [lower] limit and [upper] limit
-  const Extent(this.lower, this.upper, {Comparator comparator})
+  const Extent(this.lower, this.upper, {Comparator? comparator})
       : comparator = (comparator ?? defaultComparator);
 
   /// Returns limit as [List]
@@ -102,26 +102,24 @@ class Extent<E> implements Comparable<Extent<E>> {
   ///
   /// If E is [Comparable], [E.compareTo] is used for comparision. Otherwise,
   /// [comparator] argument is required.
-  static Extent<E> compute<E>(Iterable<E> data, {Comparator comparator}) {
+  static Extent<E>? compute<E>(Iterable<E> data, {Comparator? comparator}) {
     comparator ??= defaultComparator;
-    E min;
-    E max;
+    E? min;
+    E? max;
     for (E d in data) {
       if (d == null) continue;
 
       if (max == null || comparator(d, max) > 0) max = d;
       if (min == null || comparator(d, min) < 0) min = d;
     }
+    if(min == null || max == null) {
+      return null;
+    }
     return Extent<E>(min, max, comparator: comparator);
   }
 
-  @Deprecated('Use edgesToBins instead')
-  static List<Extent<E>> consecutive<E>(Iterable<E> data,
-          {Comparator comparator}) =>
-      edgesToBins(data, comparator: comparator);
-
   static List<Extent<E>> edgesToBins<E>(Iterable<E> data,
-      {Comparator comparator}) {
+      {Comparator? comparator}) {
     if (data.length <= 1) return [];
 
     E start = data.first;

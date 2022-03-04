@@ -13,7 +13,7 @@ class Bin<L, D> {
 
   final Accessor<L, D> accessor;
 
-  Bin(this.limit, this.items, {this.accessor});
+  Bin(this.limit, this.items, this.accessor);
 
   bool limitHas(L input) => limit.has(input);
 
@@ -24,7 +24,7 @@ class Bin<L, D> {
 
   /// Bins the provided input [data] based on given [thresholds]
   static List<Bin<L, D>> compute<L, D>(Iterable<D> data, Iterable<L> thresholds,
-      {Accessor<L, D> accessor, Comparator comparator}) {
+      {Accessor<L, D>? accessor, Comparator? comparator}) {
     accessor ??= identityAccessor;
     final limits = thresholdsToLimits(thresholds, comparator: comparator);
 
@@ -42,7 +42,7 @@ class Bin<L, D> {
 
     final ret = <Bin<L, D>>[]..length = limits.length;
     for (int i = 0; i < limits.length; i++) {
-      ret[i] = Bin<L, D>(limits[i], itemBins[i], accessor: accessor);
+      ret[i] = Bin<L, D>(limits[i], itemBins[i], accessor);
     }
 
     return ret;
@@ -50,15 +50,15 @@ class Bin<L, D> {
 
   /// Converts given [thresholds] into [Extent]s.
   static List<Extent<E>> thresholdsToLimits<E>(Iterable<E> thresholds,
-      {Comparator comparator}) {
+      {Comparator? comparator}) {
     if (thresholds.length < 2) {
       throw UnsupportedError('There should be atleast 2 elements in threshold');
     }
 
-    final ret = <Extent<E>>[]..length = thresholds.length - 1;
+    final ret = List<Extent<E>?>.filled(thresholds.length - 1, null);
     E prev = thresholds.first;
     int i = 0;
-    bool isAscending;
+    bool? isAscending;
     for (E e in thresholds.skip(1)) {
       final extent = Extent<E>(prev, e, comparator: comparator);
       if (isAscending == null) {
@@ -72,6 +72,6 @@ class Bin<L, D> {
       prev = e;
     }
 
-    return ret;
+    return ret.cast<Extent<E>>();
   }
 }

@@ -12,15 +12,12 @@ class MonthRange extends IterableBase<DateTime> {
 
   MonthRange._(this.start, this.stop, this.step);
 
-  factory MonthRange(DateTime start, DateTime stop, [int stepInMonths]) {
-    if (stepInMonths == null) {
-      stepInMonths = 1;
-    } else {
-      if (stepInMonths <= 0) {
-        throw ArgumentError.value(
-            stepInMonths, 'stepInMonths', 'Must be greater than 0');
-      }
+  factory MonthRange(DateTime start, DateTime stop, [int stepInMonths = 1]) {
+    if (stepInMonths <= 0) {
+      throw ArgumentError.value(
+          stepInMonths, 'stepInMonths', 'Must be greater than 0');
     }
+
     if (stop.isBefore(start)) stepInMonths = -stepInMonths;
     return MonthRange._(start, stop, stepInMonths);
   }
@@ -43,8 +40,9 @@ class MonthRange extends IterableBase<DateTime> {
 }
 
 class MonthRangeIterator implements Iterator<DateTime> {
+  DateTime? _pos;
+
   final DateTime _start;
-  DateTime _pos;
   final DateTime _stop;
   final int _step;
 
@@ -54,7 +52,13 @@ class MonthRangeIterator implements Iterator<DateTime> {
         _step = step;
 
   @override
-  DateTime get current => _pos;
+  DateTime get current {
+    if(_pos == null) {
+      throw Exception('iterator not initialized');
+    }
+
+    return _pos!;
+  }
 
   @override
   bool moveNext() {
@@ -62,7 +66,7 @@ class MonthRangeIterator implements Iterator<DateTime> {
     if (_pos == null) {
       next = _start;
     } else {
-      next = stepFunc(_pos, _step, _start.day);
+      next = stepFunc(_pos!, _step, _start.day);
     }
 
     if (!_step.isNegative) {
