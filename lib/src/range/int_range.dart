@@ -133,7 +133,7 @@ class IntRangeIterator implements Iterator<int> {
 
   @override
   int get current {
-    if(_pos == null) {
+    if (_pos == null) {
       throw Exception('iterator not initialized');
     }
 
@@ -158,4 +158,11 @@ class IntRangeIterator implements Iterator<int> {
     _pos = next;
     return true;
   }
+}
+
+extension IntExt on int {
+  IntRange to(int stop, [int step = 1]) => IntRange(this, stop, step);
+
+  IntRange linspace(int stop, [int count = 50]) =>
+      IntRange.linspace(this, stop, count);
 }

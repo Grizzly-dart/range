@@ -134,7 +134,7 @@ class TimeRangeIterator implements Iterator<DateTime> {
 
   @override
   DateTime get current {
-    if(_pos == null) {
+    if (_pos == null) {
       throw Exception('iterator not initialized');
     }
 
@@ -159,6 +159,11 @@ class TimeRangeIterator implements Iterator<DateTime> {
     _pos = next;
     return true;
   }
+}
+
+extension TimeRangeExt on DateTime {
+  TimeRange to(DateTime stop, [Duration step = const Duration(days: 1)]) =>
+      TimeRange(this, stop, step);
 }
 
 /*

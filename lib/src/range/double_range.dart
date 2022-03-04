@@ -1,5 +1,13 @@
 part of grizzly.range.range;
 
+extension DoubleExt on double {
+  DoubleRange to(double stop, [double step = 1]) =>
+      DoubleRange(this, stop, step);
+
+  DoubleRange linspace(double stop, [int count = 50]) =>
+      DoubleRange.linspace(this, stop, count);
+}
+
 class DoubleRange extends IterableBase<double> {
   /// Starting value of the range
   final double start;
@@ -101,7 +109,7 @@ class DoubleRangeIterator implements Iterator<double> {
 
   @override
   double get current {
-    if(_pos == null) {
+    if (_pos == null) {
       throw Exception('iterator not initialized');
     }
     return _pos!;

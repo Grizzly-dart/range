@@ -53,7 +53,7 @@ class MonthRangeIterator implements Iterator<DateTime> {
 
   @override
   DateTime get current {
-    if(_pos == null) {
+    if (_pos == null) {
       throw Exception('iterator not initialized');
     }
 
@@ -145,6 +145,10 @@ class MonthRangeIterator implements Iterator<DateTime> {
     if (!steps.isNegative) return _add(date, steps, preferDay);
     return _subtract(date, steps, preferDay);
   }
+}
+
+extension MonthExt on DateTime {
+  MonthRange to(DateTime stop, [int step = 1]) => MonthRange(this, stop, step);
 }
 
 /*

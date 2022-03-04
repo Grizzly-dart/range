@@ -112,7 +112,7 @@ class Extent<E> implements Comparable<Extent<E>> {
       if (max == null || comparator(d, max) > 0) max = d;
       if (min == null || comparator(d, min) < 0) min = d;
     }
-    if(min == null || max == null) {
+    if (min == null || max == null) {
       return null;
     }
     return Extent<E>(min, max, comparator: comparator);
