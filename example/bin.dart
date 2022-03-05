@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:grizzly_range/grizzly_range.dart';
 
 class Data {
@@ -11,12 +13,11 @@ class Data {
 }
 
 void main() {
-  final bins = Bin.compute(<int>[11, 888, 10], <int>[0, 10, 100, 1000]);
-  print(bins);
-  // TODO
+  final rand = Random(12345);
 
-  // final bins1 = Bin.compute(<Data>[], <int>[0, 10, 100, 1000]);
-  // TODO
-
-  // TODO
+  final extents = List.generate(11, (i) => i * 10).edgesToExtents();
+  final data = List.generate(20, (index) => rand.nextInt(100));
+  print(extents.computeBins(data));
+  print(extents.computeCounts(data));
+  print(extents.computeHistogram(data));
 }

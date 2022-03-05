@@ -3,14 +3,16 @@ import 'package:grizzly_range/grizzly_range.dart';
 import 'package:grizzly_range/src/util/comparator.dart';
 import 'package:quiver/core.dart';
 
-/// Encloses an extent with a [lower] limit and [upper] limit, both inclusive
+export 'has_extent.dart';
+
+/// Encloses an extent with a inclusive [lower] limit and exclusive [upper] limit.
 ///
 ///     final extent = Extent<int>(5, 10);
 class Extent<E> implements Comparable<Extent<E>> {
   /// Inclusive lower limit of the extent
   final E lower;
 
-  /// Inclusive upper limit of the extent
+  /// Exclusive upper limit of the extent
   final E upper;
 
   final Comparator comparator;
@@ -45,9 +47,9 @@ class Extent<E> implements Comparable<Extent<E>> {
     if (comparator(lower, upper) == 0) return lower == input;
 
     if (isAscending) {
-      return comparator(input, lower) >= 0 && comparator(input, upper) <= 0;
+      return comparator(input, lower) >= 0 && comparator(input, upper) < 0;
     } else {
-      return comparator(input, upper) >= 0 && comparator(input, lower) <= 0;
+      return comparator(input, upper) >= 0 && comparator(input, lower) < 0;
     }
   }
 
@@ -102,7 +104,7 @@ class Extent<E> implements Comparable<Extent<E>> {
   ///
   /// If E is [Comparable], [E.compareTo] is used for comparision. Otherwise,
   /// [comparator] argument is required.
-  static Extent<E>? compute<E>(Iterable<E> data, {Comparator? comparator}) {
+  static Extent<E>? findExtent<E>(Iterable<E> data, {Comparator? comparator}) {
     comparator ??= defaultComparator;
     E? min;
     E? max;
@@ -118,7 +120,7 @@ class Extent<E> implements Comparable<Extent<E>> {
     return Extent<E>(min, max, comparator: comparator);
   }
 
-  static List<Extent<E>> edgesToBins<E>(Iterable<E> data,
+  static List<Extent<E>> fromEdges<E>(Iterable<E> data,
       {Comparator? comparator}) {
     if (data.length <= 1) return [];
 
@@ -134,12 +136,15 @@ class Extent<E> implements Comparable<Extent<E>> {
 
   static int search<E>(List<Extent<E>> extents, E value) {
     if (extents.isEmpty) return -1;
-    Comparator comp = (e, value) {
-      Extent extent = e;
-      if (extent.has(value)) return 0;
-      return extent.comparator(extent.lower, value);
-    };
-    if (extents.first.isDescending) {
+
+    Comparator comp;
+    if (extents.first.isAscending) {
+      comp = (e, value) {
+        Extent extent = e;
+        if (extent.has(value)) return 0;
+        return extent.comparator(extent.lower, value);
+      };
+    } else {
       comp = (e, value) {
         Extent extent = e;
         if (extent.has(value)) return 0;
@@ -149,4 +154,18 @@ class Extent<E> implements Comparable<Extent<E>> {
 
     return binarySearch<dynamic>(extents, value, compare: comp);
   }
+}
+
+typedef Extents<T> = List<Extent<T>>;
+
+extension ExtentsExt<T> on Extents<T> {
+  int searchExtent<E>(E value) => Extent.search(this, value);
+}
+
+extension ListExt<T> on List<T> {
+  Extent<T>? findExtent(Iterable<T> data, {Comparator? comparator}) =>
+      Extent.findExtent(this, comparator: comparator);
+
+  Extents<T> edgesToExtents({Comparator? comparator}) =>
+      Extent.fromEdges(this, comparator: comparator);
 }

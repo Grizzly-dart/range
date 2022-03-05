@@ -1,77 +1,98 @@
 import 'package:grizzly_range/grizzly_range.dart';
-import 'package:meta/meta.dart';
 
-typedef Accessor<L, D> = L Function(D input);
+extension BinExtentsExt<T> on Extents<T> {
+  List<Bin<T>> computeBins(Iterable<T> data) {
+    final bins = this.map((e) => Bin<T>(e, <T>[])).toList();
 
-L identityAccessor<L, D>(D data) => data as L;
-
-@experimental
-class Bin<L, D> {
-  final Extent<L> limit;
-
-  final Iterable<D> items;
-
-  final Accessor<L, D> accessor;
-
-  Bin(this.limit, this.items, this.accessor);
-
-  bool limitHas(L input) => limit.has(input);
-
-  bool limitHasItem(D input) => limit.has(accessor(input));
-
-  @override
-  String toString() => 'Bin(limit: $limit, items: $items)';
-
-  /// Bins the provided input [data] based on given [thresholds]
-  static List<Bin<L, D>> compute<L, D>(Iterable<D> data, Iterable<L> thresholds,
-      {Accessor<L, D>? accessor, Comparator? comparator}) {
-    accessor ??= identityAccessor;
-    final limits = thresholdsToLimits(thresholds, comparator: comparator);
-
-    // final isAscending = limits.first.isAscending;
-    final itemBins =
-        List<List<D>>.generate(limits.length, (_) => [], growable: false);
-
-    for (final D item in data) {
-      final l = accessor(item);
-      if (l == null) continue;
-      final index = Extent.search(limits, l);
-      if (index == -1) continue;
-      itemBins[index].add(item);
+    for (final T item in data) {
+      bins.addSample(item);
     }
 
-    final ret = <Bin<L, D>>[]..length = limits.length;
-    for (int i = 0; i < limits.length; i++) {
-      ret[i] = Bin<L, D>(limits[i], itemBins[i], accessor);
-    }
-
-    return ret;
+    return bins;
   }
 
-  /// Converts given [thresholds] into [Extent]s.
-  static List<Extent<E>> thresholdsToLimits<E>(Iterable<E> thresholds,
-      {Comparator? comparator}) {
-    if (thresholds.length < 2) {
-      throw UnsupportedError('There should be atleast 2 elements in threshold');
+  List<BinCount<T>> computeCounts(Iterable<T> data) {
+    final bins = this.map((e) => BinCount<T>(e, 0)).toList();
+
+    for (final T item in data) {
+      bins.addSample(item);
     }
 
-    final ret = List<Extent<E>?>.filled(thresholds.length - 1, null);
-    E prev = thresholds.first;
-    int i = 0;
-    bool? isAscending;
-    for (E e in thresholds.skip(1)) {
-      final extent = Extent<E>(prev, e, comparator: comparator);
-      if (isAscending == null) {
-        isAscending = extent.isAscending;
-      } else {
-        if (isAscending != extent.isAscending) {
-          throw UnsupportedError('Thresholds should be monotonic');
-        }
-      }
-      ret[i++] = extent;
-      prev = e;
-    }
+    return bins;
+  }
 
-    return ret.cast<Extent<E>>();
+  List<HistBin<T>> computeHistogram(Iterable<T> data) =>
+      computeCounts(data).normalize();
+}
+
+class Bin<T> implements HasExtent<T> {
+  final Extent<T> extent;
+
+  final List<T> samples;
+
+  Bin(this.extent, this.samples);
+
+  @override
+  String toString() => 'Bin(extent: $extent, samples: $samples)';
+}
+
+typedef Bins<T> = List<Bin<T>>;
+
+extension BinsExt<T> on Bins<T> {
+  void addSample(T item) {
+    if (item == null) return;
+    final index = searchExtent(item);
+    if (index == -1) return;
+    this[index].samples.add(item);
+  }
+
+  List<BinCount<T>> toCounts() =>
+      map((e) => BinCount(e.extent, e.samples.length)).toList();
+}
+
+class BinCount<T> implements HasExtent<T> {
+  final Extent<T> extent;
+  int count = 0;
+
+  BinCount(this.extent, this.count);
+
+  @override
+  String toString() => 'BinCount(extent: $extent, count: $count)';
+}
+
+typedef BinCounts<T> = List<BinCount<T>>;
+
+extension BinCountsExt<T> on BinCounts<T> {
+  void addSample(T item) {
+    if (item == null) return;
+    final index = searchExtent(item);
+    if (index == -1) return;
+    this[index].count++;
+  }
+
+  Histogram<T> normalize() {
+    final total = fold<int>(0, (int v, BinCount<T> e) => v + e.count);
+    return map((e) => HistBin(e.extent, e.count / total)).toList();
+  }
+}
+
+class HistBin<T> implements HasExtent<T> {
+  final Extent<T> extent;
+  double density = 0;
+
+  HistBin(this.extent, this.density);
+
+  @override
+  String toString() => 'HistBin(extent: $extent, density: $density)';
+}
+
+typedef Histogram<T> = List<HistBin<T>>;
+
+extension HistogramExt<T> on Histogram<T> {
+  void normalize() {
+    final total = fold<double>(0, (double v, HistBin<T> e) => v + e.density);
+    for (final bin in this) {
+      bin.density = bin.density / total;
+    }
   }
 }

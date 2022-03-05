@@ -9,7 +9,7 @@ void main() {
       .range(Duration(days: 1))
       .toList());
 
-  print(Extent.compute<int>(List<int>.generate(10, (i) => i * 10)..shuffle()));
-  print(Extent.compute<DateTime>(
+  print(Extent.findExtent<int>(List<int>.generate(10, (i) => i * 10)..shuffle()));
+  print(Extent.findExtent<DateTime>(
       List<DateTime>.generate(20, (i) => DateTime(2019, 1, i + 1))..shuffle()));
 }

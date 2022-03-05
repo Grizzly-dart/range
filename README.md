@@ -5,21 +5,17 @@ Lazy and efficient 'range' iterables to generate values based on start, stop and
 ## Int ranges
 
 ```dart
-print(IntRange(0, 5));
+for (final i in 0.to(5)) {
+  print(i);
+}
 ```
 
 Ranges can also be descending:
 
 ```dart
-print(IntRange(5, -5));
-```
-
-### Until
-
-`IntRange.until` returns an `Iterable<int>` with range [0, stop] with provided step.
-
-```dart
-print(IntRange.until(50, 10));
+for (final i in 5.to(-5)) {
+  print(i);
+}
 ```
 
 ### Linspace
@@ -27,10 +23,10 @@ print(IntRange.until(50, 10));
 `IntRange.linspace` returns an `Iterable<int>` with range [start, stop] with [count] elements in it.
 
 ```dart
-print(IntRange.linspace(1, 10, 5));
+print(1.linspace(10, 5));
 ```
 
-**Note:** For other types of ranges, please refer sections below.
+> TODO ticks
 
 ## Extent
 
