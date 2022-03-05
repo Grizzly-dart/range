@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:collection/collection.dart';
 import 'package:grizzly_range/grizzly_range.dart';
 import 'package:grizzly_range/src/util/comparator.dart';
@@ -156,14 +158,37 @@ class Extent<E> implements Comparable<Extent<E>> {
   }
 }
 
+extension IntExtentExt on Extent<int> {
+  int get distance => (upper - lower).abs();
+
+  int get smallest => min(lower, upper);
+  int get largest => max(lower, upper);
+
+  Iterable<int> rands(int count, {Random? source}) {
+    source ??= Random.secure();
+    return Iterable.generate(
+        count, (i) => source!.nextInt(distance) + smallest);
+  }
+}
+
 typedef Extents<T> = List<Extent<T>>;
 
 extension ExtentsExt<T> on Extents<T> {
   int searchExtent<E>(E value) => Extent.search(this, value);
+
+  Extent<T>? get extent {
+    if (isEmpty) return null;
+    return Extent<T>(first.lower, last.upper);
+  }
+}
+
+extension IntExtentsExt on Extents<int> {
+  Iterable<int>? rands(int count, {Random? source}) =>
+      extent?.rands(count, source: source);
 }
 
 extension ListExt<T> on List<T> {
-  Extent<T>? findExtent(Iterable<T> data, {Comparator? comparator}) =>
+  Extent<T>? findExtent({Comparator? comparator}) =>
       Extent.findExtent(this, comparator: comparator);
 
   Extents<T> edgesToExtents({Comparator? comparator}) =>

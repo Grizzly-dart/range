@@ -1,3 +1,8 @@
+## 3.0.0
+
++ Null safety
++ Many breaking changes
+
 ## 2.0.9
 
 + Deprecated `Extent.consecutive`. Use `Extent.edgesToBins` instead
