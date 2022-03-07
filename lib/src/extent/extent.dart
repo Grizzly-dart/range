@@ -158,16 +158,26 @@ class Extent<E> implements Comparable<Extent<E>> {
   }
 }
 
+extension NumExtentExt<T extends num> on Extent<T> {
+  T get distance => (upper - lower).abs() as T;
+
+  T get smallest => min(lower, upper);
+  T get largest => max(lower, upper);
+}
+
 extension IntExtentExt on Extent<int> {
-  int get distance => (upper - lower).abs();
-
-  int get smallest => min(lower, upper);
-  int get largest => max(lower, upper);
-
   Iterable<int> rands(int count, {Random? source}) {
     source ??= Random.secure();
     return Iterable.generate(
         count, (i) => source!.nextInt(distance) + smallest);
+  }
+}
+
+extension DoubleExtentExt on Extent<double> {
+  Iterable<double> rands(int count, {Random? source}) {
+    source ??= Random.secure();
+    return Iterable.generate(
+        count, (i) => source!.nextDouble() * distance + smallest);
   }
 }
 
