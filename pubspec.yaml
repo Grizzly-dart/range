@@ -10,6 +10,7 @@ dependencies:
   meta: ^1.7.0
   quiver: ^3.0.1+1
   collection: ^1.15.0
+  text_table: ^3.0.0
 
 dev_dependencies:
   lints: ^1.0.1

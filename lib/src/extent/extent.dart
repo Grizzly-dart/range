@@ -100,7 +100,7 @@ class Extent<E> implements Comparable<Extent<E>> {
   }
 
   @override
-  String toString() => 'Extent [$lower, $upper]';
+  String toString() => '[$lower, $upper)';
 
   /// Computes an [Extent] from given [data] by finding the minimum and maximum.
   ///

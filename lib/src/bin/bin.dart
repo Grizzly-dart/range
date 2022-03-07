@@ -1,4 +1,5 @@
 import 'package:grizzly_range/grizzly_range.dart';
+import 'package:text_table/text_table.dart';
 
 extension BinExtentsExt<T> on Extents<T> {
   List<Bin<T>> computeBins(Iterable<T> data) {
@@ -74,6 +75,14 @@ extension BinCountsExt<T> on BinCounts<T> {
     final total = fold<int>(0, (int v, BinCount<T> e) => v + e.count);
     return map((e) => HistBin(e.extent, e.count / total)).toList();
   }
+
+  String asTable() {
+    final tab = table(['Lower', 'Upper', 'Count']);
+    for(final item in this) {
+      tab.row([item.extent.lower, item.extent.upper, item.count]);
+    }
+    return tab.toString();
+  }
 }
 
 class HistBin<T> implements HasExtent<T> {
@@ -94,5 +103,13 @@ extension HistogramExt<T> on Histogram<T> {
     for (final bin in this) {
       bin.density = bin.density / total;
     }
+  }
+
+  String asTable() {
+    final tab = table(['Lower', 'Upper', 'Density']);
+    for(final item in this) {
+      tab.row([item.extent.lower, item.extent.upper, item.density]);
+    }
+    return tab.toString();
   }
 }

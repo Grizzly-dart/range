@@ -48,13 +48,12 @@ Iterable<T> until<T>(T stop, [step]) {
 Iterable<int> indices(int length) => IntRange(0, length - 1);
 
 Iterable<T> linspace<T extends num>(T start, T stop, [int count = 100]) {
-  if (start is int) {
-    return IntRange.linspace(start, stop.toInt(), count) as Iterable<T>;
-  } else if (start is double) {
-    return DoubleRange.linspace(start, stop.toDouble(), count) as Iterable<T>;
+  if (start is int && stop is int) {
+    return IntRange.linspace(start.toInt(), stop.toInt(), count) as Iterable<T>;
+  } else {
+    return DoubleRange.linspace(start.toDouble(), stop.toDouble(), count)
+        as Iterable<T>;
   }
-
-  throw Exception('Unknown type T');
 }
 
 Iterable<int> zeros([int length = 10]) => ConstantIterable(0, length);
