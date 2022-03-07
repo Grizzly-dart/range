@@ -105,6 +105,8 @@ extension HistogramExt<T> on Histogram<T> {
     }
   }
 
+  double get density => fold(0.0, (v, e) => v + e.density);
+
   String asTable() {
     final tab = table(['Lower', 'Upper', 'Density']);
     for(final item in this) {
