@@ -1,3 +1,8 @@
+## 3.0.1
+
++ Random number generator
++ Bins asTable method
+
 ## 3.0.0
 
 + Null safety

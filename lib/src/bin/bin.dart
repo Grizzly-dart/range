@@ -78,7 +78,7 @@ extension BinCountsExt<T> on BinCounts<T> {
 
   String asTable() {
     final tab = table(['Lower', 'Upper', 'Count']);
-    for(final item in this) {
+    for (final item in this) {
       tab.row([item.extent.lower, item.extent.upper, item.count]);
     }
     return tab.toString();
@@ -109,7 +109,7 @@ extension HistogramExt<T> on Histogram<T> {
 
   String asTable() {
     final tab = table(['Lower', 'Upper', 'Density']);
-    for(final item in this) {
+    for (final item in this) {
       tab.row([item.extent.lower, item.extent.upper, item.density]);
     }
     return tab.toString();
