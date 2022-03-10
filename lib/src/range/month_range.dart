@@ -147,7 +147,7 @@ class MonthRangeIterator implements Iterator<DateTime> {
   }
 }
 
-extension MonthExt on DateTime {
+extension MonthRangeExt on DateTime {
   MonthRange to(DateTime stop, [int step = 1]) => MonthRange(this, stop, step);
 }
 

@@ -1,6 +1,6 @@
 part of grizzly.range.range;
 
-extension DoubleExt on double {
+extension DoubleRangeExt on double {
   DoubleRange to(double stop, [double step = 1]) =>
       DoubleRange(this, stop, step);
 

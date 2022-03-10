@@ -160,7 +160,7 @@ class IntRangeIterator implements Iterator<int> {
   }
 }
 
-extension IntExt on int {
+extension IntRangeExt on int {
   IntRange to(int stop, [int step = 1]) => IntRange(this, stop, step);
 
   IntRange linspace(int stop, [int count = 50]) =>

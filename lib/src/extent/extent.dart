@@ -197,7 +197,7 @@ extension IntExtentsExt on Extents<int> {
       extent?.rands(count, source: source);
 }
 
-extension ListExt<T> on List<T> {
+extension ListExtExtent<T> on List<T> {
   Extent<T>? findExtent({Comparator? comparator}) =>
       Extent.findExtent(this, comparator: comparator);
 

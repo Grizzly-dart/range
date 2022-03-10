@@ -1,3 +1,7 @@
+## 3.0.2
+
++ **Breaking changes**: renamed extension names
+
 ## 3.0.1
 
 + Random number generator
