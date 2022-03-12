@@ -13,11 +13,11 @@ part 'month_range.dart';
 part 'time_range.dart';
 
 Iterable<T> range<T>(T start, T stop, [step]) {
-  if (T == int) {
-    return IntRange(start as int, stop as int, step?.toInt() ?? 1)
-        as Iterable<T>;
-  } else if (T == double) {
-    return DoubleRange(start as double, stop as double, step?.toDouble() ?? 1.0)
+  if (start is int && stop is int) {
+    return IntRange(start, stop, step?.toInt() ?? 1) as Iterable<T>;
+  } else if (start is num && stop is num) {
+    return DoubleRange(
+            start.toDouble(), stop.toDouble(), step?.toDouble() ?? 1.0)
         as Iterable<T>;
   } else if (T == DateTime) {
     if (step is Duration) {
@@ -41,6 +41,8 @@ Iterable<T> until<T>(T stop, [step]) {
   } else if (stop is double) {
     return DoubleRange.until(stop, step?.toDouble() ?? 1.0) as Iterable<T>;
   }
+  // TODO TimeRange
+  // TODO DurationRange
 
   throw Exception('Unknown type $T');
 }

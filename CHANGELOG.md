@@ -1,3 +1,7 @@
+## 3.0.3
+
++ range function shall detect types better
+
 ## 3.0.2
 
 + **Breaking changes**: renamed extension names
