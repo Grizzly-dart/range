@@ -22,8 +22,23 @@ extension BinExtentsExt<T> on Extents<T> {
     return bins;
   }
 
+  Future<List<BinCount<T>>> computeCountsStream(Stream<T> data) async {
+    final bins = this.map((e) => BinCount<T>(e, 0)).toList();
+
+    await for (final T item in data) {
+      bins.addSample(item);
+    }
+
+    return bins;
+  }
+
   List<HistBin<T>> computeHistogram(Iterable<T> data) =>
       computeCounts(data).normalize();
+
+  Future<List<HistBin<T>>> computeHistogramStream(Stream<T> data) async {
+    final bins = await computeCountsStream(data);
+    return bins.normalize();
+  }
 }
 
 class Bin<T> implements HasExtent<T> {

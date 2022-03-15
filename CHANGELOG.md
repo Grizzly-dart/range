@@ -1,3 +1,7 @@
+## 3.0.4
+
++ Bins and Histogram stream processors
+
 ## 3.0.3
 
 + range function shall detect types better

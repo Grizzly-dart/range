@@ -1,6 +1,6 @@
 name: grizzly_range
 description: Lazy and efficient 'range' iterables to generate values based on start, stop and step/count.
-version: 3.0.3
+version: 3.0.4
 homepage: https://github.com/Grizzly-dart/range
 
 environment:
