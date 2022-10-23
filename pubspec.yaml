@@ -1,17 +1,17 @@
 name: grizzly_range
 description: Lazy and efficient 'range' iterables to generate values based on start, stop and step/count.
-version: 3.0.4
+version: 3.0.5
 homepage: https://github.com/Grizzly-dart/range
 
 environment:
   sdk: '>=2.15.0 <3.0.0'
 
 dependencies:
-  meta: ^1.7.0
-  quiver: ^3.0.1+1
-  collection: ^1.16.0
-  text_table: ^3.0.0
+  meta: ^1.8.0
+  quiver: ^3.1.0
+  collection: ^1.17.0
+  text_table: ^4.0.3
 
 dev_dependencies:
-  lints: ^1.0.1
-  test: ^1.20.1
+  lints: ^2.0.1
+  test: ^1.21.6

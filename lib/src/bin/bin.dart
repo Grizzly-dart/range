@@ -64,6 +64,14 @@ extension BinsExt<T> on Bins<T> {
 
   List<BinCount<T>> toCounts() =>
       map((e) => BinCount(e.extent, e.samples.length)).toList();
+
+
+  String asTable({TableRenderer? renderer}) {
+    renderer ??= _renderer;
+    return renderer.render(
+        map((e) => [e.extent.lower, e.extent.upper, e.samples]),
+        columns: ['Lower', 'Upper', 'Samples']);
+  }
 }
 
 class BinCount<T> implements HasExtent<T> {
@@ -91,12 +99,11 @@ extension BinCountsExt<T> on BinCounts<T> {
     return map((e) => HistBin(e.extent, e.count / total)).toList();
   }
 
-  String asTable() {
-    final tab = table(['Lower', 'Upper', 'Count']);
-    for (final item in this) {
-      tab.row([item.extent.lower, item.extent.upper, item.count]);
-    }
-    return tab.toString();
+  String asTable({TableRenderer? renderer}) {
+    renderer ??= _renderer;
+    return renderer.render(
+        map((e) => [e.extent.lower, e.extent.upper, e.count]),
+        columns: ['Lower', 'Upper', 'Count']);
   }
 }
 
@@ -122,11 +129,12 @@ extension HistogramExt<T> on Histogram<T> {
 
   double get density => fold(0.0, (v, e) => v + e.density);
 
-  String asTable() {
-    final tab = table(['Lower', 'Upper', 'Density']);
-    for (final item in this) {
-      tab.row([item.extent.lower, item.extent.upper, item.density]);
-    }
-    return tab.toString();
+  String asTable({TableRenderer? renderer}) {
+    renderer ??= _renderer;
+    return renderer.render(
+        map((e) => [e.extent.lower, e.extent.upper, e.density]),
+        columns: ['Lower', 'Upper', 'Density']);
   }
 }
+
+const _renderer = TableRenderer();

@@ -1,3 +1,8 @@
+## 3.0.5
+
++ `BinsExt.asTable`
++ Fixed Table render fixes
+
 ## 3.0.4
 
 + Bins and Histogram stream processors
