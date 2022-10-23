@@ -61,3 +61,7 @@ Iterable<T> linspace<T extends num>(T start, T stop, [int count = 100]) {
 Iterable<int> zeros([int length = 10]) => ConstantIterable(0, length);
 
 Iterable<int> ones([int length = 10]) => ConstantIterable(1, length);
+
+extension ObjectRangeExt<T> on T {
+  Iterable<T> repeat(int count) => Iterable.generate(count, (index) => this);
+}
