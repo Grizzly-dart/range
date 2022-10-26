@@ -62,6 +62,8 @@ Iterable<int> zeros([int length = 10]) => ConstantIterable(0, length);
 
 Iterable<int> ones([int length = 10]) => ConstantIterable(1, length);
 
-extension ObjectRangeExt<T> on T {
-  Iterable<T> repeat(int count) => Iterable.generate(count, (index) => this);
+Iterable<T> repeat<T>(T v, int count) => ConstantIterable(v, count);
+
+extension ObjRangeExt<T> on T {
+  Iterable<T> repeat(int count) => ConstantIterable(this, count);
 }
