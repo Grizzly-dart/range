@@ -24,62 +24,6 @@ class TimeRange extends IterableBase<DateTime> {
     return TimeRange._(start, stop, step);
   }
 
-  factory TimeRange.us(DateTime start, DateTime stop, [int step = 1]) {
-    if (step <= 0) {
-      throw ArgumentError.value(step, 'step', 'Must be greater than 0');
-    }
-
-    return TimeRange(start, stop, Duration(microseconds: step));
-  }
-
-  factory TimeRange.ms(DateTime start, DateTime stop, [int step = 1]) {
-    if (step <= 0) {
-      throw ArgumentError.value(step, 'step', 'Must be greater than 0');
-    }
-
-    return TimeRange(start, stop, Duration(milliseconds: step));
-  }
-
-  factory TimeRange.s(DateTime start, DateTime stop, [int step = 1]) {
-    if (step <= 0) {
-      throw ArgumentError.value(step, 'step', 'Must be greater than 0');
-    }
-
-    return TimeRange(start, stop, Duration(seconds: step));
-  }
-
-  factory TimeRange.m(DateTime start, DateTime stop, [int step = 1]) {
-    if (step <= 0) {
-      throw ArgumentError.value(step, 'step', 'Must be greater than 0');
-    }
-
-    return TimeRange(start, stop, Duration(minutes: step));
-  }
-
-  factory TimeRange.h(DateTime start, DateTime stop, [int step = 1]) {
-    if (step <= 0) {
-      throw ArgumentError.value(step, 'step', 'Must be greater than 0');
-    }
-
-    return TimeRange(start, stop, Duration(hours: step));
-  }
-
-  factory TimeRange.d(DateTime start, DateTime stop, [int step = 1]) {
-    if (step <= 0) {
-      throw ArgumentError.value(step, 'step', 'Must be greater than 0');
-    }
-
-    return TimeRange(start, stop, Duration(days: step));
-  }
-
-  factory TimeRange.w(DateTime start, DateTime stop, [int step = 1]) {
-    if (step <= 0) {
-      throw ArgumentError.value(step, 'step', 'Must be greater than 0');
-    }
-
-    return TimeRange(start, stop, Duration(days: step * 7));
-  }
-
   @override
   Iterator<DateTime> get iterator => TimeRangeIterator(start, stop, step);
 
@@ -206,4 +150,4 @@ abstract class CalendarRange extends Iterable<DateTime> {
     return values;
   }
 }
- */
+*/

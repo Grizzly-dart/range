@@ -2,6 +2,7 @@ library grizzly.range.range;
 
 import 'dart:collection';
 
+import 'package:grizzly_range/grizzly_range.dart';
 import 'package:quiver/core.dart';
 
 export 'ticks.dart';
@@ -11,6 +12,7 @@ part 'double_range.dart';
 part 'int_range.dart';
 part 'month_range.dart';
 part 'time_range.dart';
+part 'duration_range.dart';
 
 Iterable<T> range<T>(T start, T stop, [step]) {
   if (start is int && stop is int) {
@@ -35,19 +37,30 @@ Iterable<T> range<T>(T start, T stop, [step]) {
   throw UnsupportedError('range is not supported for $T');
 }
 
-Iterable<T> until<T>(T stop, [step]) {
-  if (stop is int) {
-    return IntRange.until(stop, step?.toInt() ?? 1) as Iterable<T>;
-  } else if (stop is double) {
-    return DoubleRange.until(stop, step?.toDouble() ?? 1.0) as Iterable<T>;
+Iterable<T> to<T>(T stop, [T? step]) {
+  if (T == int) {
+    return IntRange.until(stop as int, (step as num?)?.toInt() ?? 1)
+        as Iterable<T>;
+  } else if (T == double) {
+    return DoubleRange.until(stop as double, (step as num?)?.toDouble() ?? 1.0)
+        as Iterable<T>;
+  } else if (T == Duration) {
+    return DurationRange.until(
+            stop as Duration, step as Duration? ?? Duration(seconds: 1))
+        as Iterable<T>;
+  } else if (stop.runtimeType == int) {
+    return IntRange.until(stop as int, (step as num?)?.toInt() ?? 1)
+        as Iterable<T>;
+  } else if (stop.runtimeType == double) {
+    return DoubleRange.until(stop as double, (step as num?)?.toDouble() ?? 1.0)
+        as Iterable<T>;
   }
   // TODO TimeRange
-  // TODO DurationRange
 
   throw Exception('Unknown type $T');
 }
 
-Iterable<int> indices(int length) => IntRange(0, length - 1);
+Iterable<int> take(int length, [int step = 1]) => 0.take(length, step);
 
 Iterable<T> linspace<T extends num>(T start, T stop, [int count = 100]) {
   if (start is int && stop is int) {
@@ -61,8 +74,6 @@ Iterable<T> linspace<T extends num>(T start, T stop, [int count = 100]) {
 Iterable<int> zeros([int length = 10]) => ConstantIterable(0, length);
 
 Iterable<int> ones([int length = 10]) => ConstantIterable(1, length);
-
-Iterable<T> repeat<T>(T v, int count) => ConstantIterable(v, count);
 
 extension ObjRangeExt<T> on T {
   Iterable<T> repeat(int count) => ConstantIterable(this, count);

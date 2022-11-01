@@ -42,11 +42,19 @@ class IntRange extends IterableBase<int> {
   ///
   ///     print(IntRange(0, 5)); => (0, 1, 2, 3, 4, 5)
   factory IntRange(int start, int stop, [int step = 1]) {
-    if (step <= 0) {
-      throw ArgumentError.value(step, 'step', 'Must be greater than 0');
+    if (step == Duration()) {
+      throw ArgumentError.value(step, 'step', 'cannot be 0');
     }
 
-    if (stop < start) step = -step;
+    if (stop < start) {
+      if (!step.isNegative) {
+        step = -step;
+      }
+    } else {
+      if (step.isNegative) {
+        step = -step;
+      }
+    }
     return IntRange._(start, stop, step);
   }
 
@@ -162,6 +170,9 @@ class IntRangeIterator implements Iterator<int> {
 
 extension IntRangeExt on int {
   IntRange to(int stop, [int step = 1]) => IntRange(this, stop, step);
+
+  IntRange take(int count, [int step = 1]) =>
+      IntRange(this, this + (count * step), step);
 
   IntRange linspace(int stop, [int count = 50]) =>
       IntRange.linspace(this, stop, count);

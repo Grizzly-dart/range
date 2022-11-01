@@ -16,4 +16,9 @@ void main() {
   print(DoubleRange.until(5, 2).length);
   print(DoubleRange.linspace(-4.5, 20.5, 5).length);
   print(DoubleRange.linspace(10, -8, 5).length);
+
+  print(to(10.0));
+  print(to(10.0, 2.0));
+  print(to(10.0, 2));
+  print(to(11.0, 2.2));
 }
