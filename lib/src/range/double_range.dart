@@ -1,13 +1,5 @@
 part of grizzly.range.range;
 
-extension DoubleRangeExt on double {
-  DoubleRange to(double stop, [double step = 1]) =>
-      DoubleRange(this, stop, step);
-
-  DoubleRange linspace(double stop, [int count = 50]) =>
-      DoubleRange.linspace(this, stop, count);
-}
-
 class DoubleRange extends IterableBase<double> {
   /// Starting value of the range
   final double start;
@@ -20,41 +12,64 @@ class DoubleRange extends IterableBase<double> {
 
   DoubleRange._(this.start, this.stop, this.step);
 
+  /// Returns an iterable of integers from [start] inclusive to [stop] inclusive
+  /// with [step].
+  ///
+  /// Examples:
+  ///   print(DoubleRange(0, 5)); // (0.0, 1.0, 2.0, 3.0, 4.0, 5.0)
+  ///   print(DoubleRange(0, 5, 0.5)); // (0.0, 0.5, 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0)
+  ///   print(DoubleRange(5, -5)); // (5.0, 4.0, 3.0, 2.0, 1.0, 0.0, -1.0, -2.0, -3.0, -4.0, -5.0)
   factory DoubleRange(double start, double stop, [double step = 1]) {
-    if (step <= 0) {
-      throw ArgumentError.value(step, 'step', 'Must be greater than 0');
+    if (step == 0) {
+      throw ArgumentError.value(step, 'step', 'cannot be 0');
     }
 
-    if (stop < start) step = -step;
+    if (stop < start) {
+      if (!step.isNegative) {
+        step = -step;
+      }
+    } else {
+      if (step.isNegative) {
+        step = -step;
+      }
+    }
     return DoubleRange._(start, stop, step);
   }
 
   /// Create a range [0, stop] with [step]
-  factory DoubleRange.until(double stop, [double step = 1.0]) {
-    if (step <= 0) {
-      throw ArgumentError.value(step, 'step', 'Must be greater than 0');
-    }
+  ///
+  ///   IntRange.until(5, 2); // (0.0, 2.0, 4.0)
+  ///   IntRange.until(-5, -2); // (0.0, -2.0, -4.0)
+  factory DoubleRange.until(double stop, [double step = 1.0]) =>
+      DoubleRange(0.0, stop, step);
 
-    if (stop < 0) step = -step;
-    return DoubleRange._(0.0, stop, step);
-  }
-
+  /// Returns an iterable of [count] integers from [start] inclusive to [stop]
+  /// inclusive.
+  ///
+  ///   DoubleRange.linspace(-4.5, 20.5, 5); // [-4.5, 1.75, 8.0, 14.25, 20.5]
+  ///   DoubleRange.linspace(10, -8, 5); // [10.0, 5.5, 1.0, -3.5, -8.0]
+  ///   DoubleRange.linspace(0, 1, 5); // [0.0, 0.25, 0.5, 0.75, 1.0]
+  ///   DoubleRange.linspace(0, 1, 6); // [0.0, 0.2, 0.4, 0.6, 0.8, 1.0]
   factory DoubleRange.linspace(double start, double stop, [int count = 50]) {
     if (count <= 0) {
       throw ArgumentError.value(count, 'count', 'Must be a positive integer');
+    } else if(count == 0) {
+      return DoubleRange(start, stop, stop - start);
     }
 
     double step = 0;
     if (stop > start) {
-      step = (stop - start /* TODO  + 1*/) / count;
+      step = (stop - start) / (count - 1);
     } else {
-      step = (start - stop /* TODO + 1*/) / count;
+      step = (start - stop) / (count - 1);
     }
 
     if (step == 0) step = 1;
-    if (stop < step) step = -step;
+    if (stop < start) {
+      step = -step;
+    }
 
-    return DoubleRange._(start, stop, step);
+    return DoubleRange(start, stop, step);
   }
 
   @override
@@ -62,22 +77,11 @@ class DoubleRange extends IterableBase<double> {
 
   @override
   int get length {
-    if (step == 0) throw Exception('Step cannot be 0');
     if (!step.isNegative) {
-      if (start > stop) {
-        throw Exception(
-            'start cannot be greater than stop when step is positive!');
-      }
-      int ret = ((stop - start) / step).ceil();
-      if (start + step * ret < stop + 1e-12) ret++;
+      int ret = ((stop - start + 1e-12) / step).ceil();
       return ret;
     } else {
-      if (start < stop) {
-        throw Exception(
-            'start cannot be less than stop when step is negative!');
-      }
-      int ret = ((start - stop) / -step).ceil();
-      if (start + step * ret > stop - 1e-12) ret++;
+      int ret = ((start - stop + 1e-12) / -step).ceil();
       return ret;
     }
   }
@@ -133,4 +137,15 @@ class DoubleRangeIterator implements Iterator<double> {
     _pos = next;
     return true;
   }
+}
+
+extension DoubleRangeExt on double {
+  DoubleRange to(double stop, [double step = 1]) =>
+      DoubleRange(this, stop, step);
+
+  DoubleRange take(int count, [double step = 1]) =>
+      DoubleRange(this, this + (count * step), step);
+
+  DoubleRange linspace(double stop, [int count = 50]) =>
+      DoubleRange.linspace(this, stop, count);
 }

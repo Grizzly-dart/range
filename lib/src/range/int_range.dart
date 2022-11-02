@@ -40,7 +40,10 @@ class IntRange extends IterableBase<int> {
   /// Returns an iterable of integers from [start] inclusive to [stop] inclusive
   /// with [step].
   ///
-  ///     print(IntRange(0, 5)); => (0, 1, 2, 3, 4, 5)
+  /// Examples:
+  ///   IntRange(0, 5); // (0, 1, 2, 3, 4, 5)
+  ///   IntRange(0, 10, 2); // (0, 2, 4, 6, 8, 10)
+  ///   IntRange(5, -5); // (5, 4, 3, 2, 1, 0, -1, -2, -3, -4, -5)
   factory IntRange(int start, int stop, [int step = 1]) {
     if (step == Duration()) {
       throw ArgumentError.value(step, 'step', 'cannot be 0');
@@ -61,15 +64,9 @@ class IntRange extends IterableBase<int> {
   /// Returns an iterable of integers from 0 inclusive to [stop] inclusive with
   /// [step].
   ///
-  ///     print(IntRange.until(5, 2)); => (0, 2, 4)
-  factory IntRange.until(int stop, [int step = 1]) {
-    if (step <= 0) {
-      throw ArgumentError.value(step, 'step', 'Must be greater than 0');
-    }
-
-    if (stop < 0) step = -step;
-    return IntRange._(0, stop, step);
-  }
+  ///   IntRange.until(5, 2); // (0, 2, 4)
+  ///   IntRange.until(-5, -2); // (0, -2, -4)
+  factory IntRange.until(int stop, [int step = 1]) => IntRange(0, stop, step);
 
   /// Returns an iterable of [count] integers from [start] inclusive to [stop]
   /// inclusive.
@@ -78,19 +75,24 @@ class IntRange extends IterableBase<int> {
   factory IntRange.linspace(int start, int stop, int count) {
     if (count <= 0) {
       throw ArgumentError.value(count, 'count', 'Must be a positive integer');
+    } else if(count == 1) {
+      return IntRange(start, stop, stop - start);
     }
 
     int step = 0;
     if (stop > start) {
-      step = (stop - start + 1) ~/ count;
+      step = (stop - start) ~/ (count - 1);
     } else {
-      step = (start - stop + 1) ~/ count;
+      step = (start - stop) ~/ (count - 1);
     }
 
     if (step == 0) step = 1;
-    if (stop < step) step = -step;
+    if (stop < start) {
+      step = -step;
+    }
 
-    return IntRange._(start, stop, step);
+    stop = start + (step * (count - 1));
+    return IntRange(start, stop, step);
   }
 
   @override
@@ -98,18 +100,9 @@ class IntRange extends IterableBase<int> {
 
   @override
   int get length {
-    if (step == 0) throw Exception('Step cannot be 0');
     if (!step.isNegative) {
-      if (start > stop) {
-        throw Exception(
-            'start cannot be greater than stop when step is positive!');
-      }
       return ((stop - start + 1) / step).ceil();
     } else {
-      if (start < stop) {
-        throw Exception(
-            'start cannot be less than stop when step is negative!');
-      }
       return ((start - stop + 1) / -step).ceil();
     }
   }

@@ -40,9 +40,8 @@ class DurationRange extends IterableBase<Duration> {
   ///
   ///     print(DurationRange.until(5, 2)); => (0, 2, 4)
   factory DurationRange.until(Duration stop,
-      [Duration step = const Duration(seconds: 1)]) {
-    return DurationRange._(Duration(), stop, step);
-  }
+          [Duration step = const Duration(seconds: 1)]) =>
+      DurationRange(Duration(), stop, step);
 
   /// Returns an iterable of [count] integers from [start] inclusive to [stop]
   /// inclusive.
@@ -52,7 +51,7 @@ class DurationRange extends IterableBase<Duration> {
     if (count <= 0) {
       throw ArgumentError.value(count, 'count', 'Must be a positive integer');
     } else if (count == 1) {
-      return DurationRange._(start, start, stop - start);
+      return DurationRange(start, start, stop - start);
     }
 
     Duration step;
@@ -65,9 +64,11 @@ class DurationRange extends IterableBase<Duration> {
     }
 
     if (step == Duration()) step = Duration(microseconds: 1);
-    if (stop < step) step = -step;
+    if (stop < start) {
+      step = -step;
+    }
 
-    return DurationRange._(start, stop, step);
+    return DurationRange(start, stop, step);
   }
 
   @override
