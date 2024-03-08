@@ -6,6 +6,7 @@ import 'package:grizzly_range/grizzly_range.dart';
 import 'package:quiver/core.dart';
 
 export 'ticks.dart';
+export 'zip.dart';
 
 part 'constant_iterable.dart';
 part 'double_range.dart';
