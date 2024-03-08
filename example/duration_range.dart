@@ -26,12 +26,12 @@ void main() {
     print(items.length);
   }
   {
-    final items = to(Duration(seconds: 10), Duration(seconds: 2));
+    final items = until(Duration(seconds: 10), Duration(seconds: 2));
     print(items.toList());
     print(items.length);
   }
   {
-    final items = to(Duration(seconds: 10), Duration(seconds: 2));
+    final items = until(Duration(seconds: 10), Duration(seconds: 2));
     print(items.toList());
     print(items.length);
   }

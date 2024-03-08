@@ -37,7 +37,9 @@ Iterable<T> range<T>(T start, T stop, [step]) {
   throw UnsupportedError('range is not supported for $T');
 }
 
-Iterable<T> to<T>(T stop, [T? step]) {
+Iterable<int> indices(int length) => IntRange.until(length);
+
+Iterable<T> until<T>(T stop, [T? step]) {
   if (T == int) {
     return IntRange.until(stop as int, (step as num?)?.toInt() ?? 1)
         as Iterable<T>;
