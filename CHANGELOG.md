@@ -1,3 +1,8 @@
+## 3.0.6
+
++ `indices`
++ `zip`
+
 ## 3.0.5
 
 + `BinsExt.asTable`

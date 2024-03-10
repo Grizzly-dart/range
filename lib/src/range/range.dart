@@ -2,7 +2,6 @@ library grizzly.range.range;
 
 import 'dart:collection';
 
-import 'package:grizzly_range/grizzly_range.dart';
 import 'package:quiver/core.dart';
 
 export 'ticks.dart';
