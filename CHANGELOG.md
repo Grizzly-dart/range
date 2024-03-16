@@ -1,3 +1,8 @@
+## 3.0.7
+
++ `MTRandom`
++ `int.range` extension method that returns iterable of indices up to length
+
 ## 3.0.6
 
 + `indices`

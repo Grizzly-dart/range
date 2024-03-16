@@ -162,6 +162,8 @@ class IntRangeIterator implements Iterator<int> {
 }
 
 extension IntRangeExt on int {
+  IntRange get range => IntRange(0, this - 1);
+
   IntRange to(int stop, [int step = 1]) => IntRange(this, stop, step);
 
   IntRange take(int count, [int step = 1]) =>

@@ -8,6 +8,22 @@ for (final i in 0.to(5)) {
 }
 ```
 
+Range a length from [0, n) with step 1:
+
+```dart
+// int n = 10; // Some length n
+for (final i in n.range) {
+  print(i);
+}
+```
+
+```dart
+// int n = 10; // Some length n
+for (final i in n.take(10)) {
+  print(i);
+}
+```
+
 Ranges can also be descending:
 
 ```dart
